@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Főoldal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const slider = document.querySelector(".slider");
+            const slides = document.querySelectorAll(".slider img");
+            const navLinks = document.querySelectorAll(".slider-nav a");
+            const prevBtn = document.getElementById("prevSlide");
+            const nextBtn = document.getElementById("nextSlide");
+            let index = 0;
+
+            const updateNav = () => {
+                navLinks.forEach((link, i) => {
+                    link.classList.toggle("active", i === index);
+                });
+            };
+
+            const goToSlide = (i) => {
+                index = (i + slides.length) % slides.length;
+                slider.scrollTo({ left: slides[index].offsetLeft, behavior: "smooth" });
+                updateNav();
+            };
+
+            const autoSlide = () => {
+                goToSlide(index + 1);
+            };
+
+            let interval = setInterval(autoSlide, 3000);
+
+            prevBtn.addEventListener("click", () => {
+                goToSlide(index - 1);
+                resetInterval();
+            });
+
+            nextBtn.addEventListener("click", () => {
+                goToSlide(index + 1);
+                resetInterval();
+            });
+
+            navLinks.forEach((link, i) => {
+                link.addEventListener("click", () => {
+                    goToSlide(i);
+                    resetInterval();
+                });
+            });
+
+            const resetInterval = () => {
+                clearInterval(interval);
+                interval = setInterval(autoSlide, 3000);
+            };
+
+            updateNav();
+        });
+    </script>
+    
+    <style>
+        body {
+            margin: 1rem 0 0 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            overflow: hidden;
+
+            background: linear-gradient(135deg, #FF00D6, #000D6B);
+        }
+
+        .page-content {
+            transform: translateY(-100%);
+            opacity: 0;
+            animation: slideFadeIn 1.2s ease-out forwards;
+        }
+
+        @keyframes slideFadeIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem;
+            background: none;
+            color: white;
+            gap: 1rem;
+            border-radius: 20px;
+        }
+
+        .home {
+            margin-left: 1rem;
+        }
+        .home i {
+            color: white;
+            font-size: 3.5rem;
+        }
+
+        .search-bar {
+            background: black;
+            margin-left: 2rem;
+            margin-right: 20rem;
+            display: flex;
+            width: 100%;
+            font-size: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            outline: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .search-bar i {
+            padding: 0.5rem;
+        }
+        .search-bar input {
+            font-size: inherit;
+            padding: 0.5rem 1rem 0.5rem 1rem;
+            border-radius: 10px;
+            border: none;
+            flex: 1;
+            min-width: 0;
+            color: white;
+            background: rgba(0, 0, 0, 0.1);
+        }
+        .search-bar input:focus {
+            outline: none;
+        }
+        .search-bar input::placeholder {
+            color: white;
+        }
+        .search-bar button {
+            margin-left: auto;
+            font-size: inherit;
+            padding: 0.5rem 1rem 0.5rem 1rem;
+            color: inherit;
+            transition: background 0.3s ease;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(120deg, #00c6ff, #7b2ff7, #7b2ff7);
+            background-size: 200% 200%;
+            background-position: 0% 50%;
+        }
+        .search-bar button:hover {
+            background: linear-gradient(120deg, #7b2ff7, #7b2ff7, #FFA500);
+            background-size: 200% 200%;
+            background-position: 100% 50%;
+        }
+        .search-bar button:active {
+            transform: scale(0.98);
+        }
+
+        .profile {
+            display: flex;
+            width: 100%;
+            font-size: 1rem;
+            padding: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .profile i {
+            font-size: 1.5rem;
+        }
+        .profile p {
+            color: lightblue;
+            font-weight: bold;
+            font-size: inherit;
+        }
+
+        .cart {
+            display: flex;
+            width: 100%;
+            font-size: 1rem;
+            padding: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+        .cart i {
+            font-size: 1.5rem;
+        }
+        .cart p {
+            color: lightblue;
+            font-weight: bold;
+            font-size: inherit;
+        }
+
+        .page-body {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 1rem;
+            background: black;
+            color: white;
+            gap: 1rem;
+            border-radius: 20px;
+        }
+
+        .categories {
+            margin-right: auto;
+        }
+
+        .container {
+            padding: 2rem;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            max-width: 54rem;
+            margin: 0 auto;
+        }
+
+        .slider {
+            display: flex;
+            aspect-ratio: 10 / 3;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0.25);
+            border-radius: 0.5rem;
+        }
+        .slider::-webkit-scrollbar {
+            display: none;
+        }
+        .slider img {
+            flex: 1 0 100%;
+            scroll-snap-align: start;
+            object-fit: cover;
+        }
+
+        .slider-nav {
+            display: flex;
+            column-gap: 1rem;
+            position: absolute;
+            bottom: 1.25rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .slider-nav a {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background-color: #fff;
+            opacity: 0.75;
+            transition: opacity ease 250ms;
+        }
+        .slider-nav a:hover {
+            opacity: 1;
+        }
+        .slider-nav a.active {
+            opacity: 1;
+            background-color: #7b2ff7;
+            transform: scale(1.2);
+        }
+
+        .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
+        }
+        .slider-arrow.left {
+            left: 1rem;
+        }
+        .slider-arrow.right {
+            right: 1rem;
+        }
+        .slider-wrapper:hover .slider-arrow {
+            opacity: 1;
+        }
+
+
+        .products {
+            flex: 1;
+            min-width: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="page-content">
+    <div class="header">
+        <div class="home">
+            <a href="/" target="_blank">
+                <i class="fa-solid fa-house"></i>
+            </a>
+        </div>
+
+        <div class="search-bar">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" name="search" placeholder="Írd ide mit keresel...">
+            <button>Keresés</button>
+        </div>
+
+        <div class="profile">
+            <i class="fa-solid fa-user"></i>
+            <a href="/login" style="text-decoration: none;">
+                <p>Bejelentkezés</p>
+            </a>
+        </div>
+
+        <div class="cart">
+            <i class="fa-solid fa-cart-shopping"></i>
+            <a href="/cart" style="text-decoration: none;">
+                <p>Kosaram</p>
+            </a>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="categories">
+            <p>asd</p>
+            <p>asd</p>
+            <p>asd</p>
+        </div>
+
+        <div class="products">
+            <section class="container">
+                <div class="slider-wrapper">
+                    <button class="slider-arrow left" id="prevSlide">&#10094;</button>
+                    <div class="slider">
+                        <img id="slide-1" src="https://images.unsplash.com/photo-1656464868371-602be27fd4c2?ixlib=rb-
+1.2.1&ixid=MnwxMjA3fDB8MHxwaG9@by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
+space">
+                        <img id="slide-2" src="https://images.unsplash.com/photo-1657586640569-4a3d4577328c?ixlib=rb-
+1.2.1&ixid=MnwxMjA3fDB8MHxwaG9@by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
+space">
+                        <img id="slide-3" src="https://images.unsplash.com/photo-
+1656077217715-bdaeb06bd01f?ixlib=rb-
+1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
+space">
+                    </div>
+                    <button class="slider-arrow right" id="nextSlide">&#10095;</button>
+
+                    <div class="slider-nav">
+                        <a href="#slide-1"></a>
+                        <a href="#slide-2"></a>
+                        <a href="#slide-3"></a>
+                    </div>
+                </div>
+            </section>
+
+            <div>
+                asd
+                asd
+                asd
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

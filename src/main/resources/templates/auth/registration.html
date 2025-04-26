@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Regisztráció</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      background:
+              linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+              url('https://t3.ftcdn.net/jpg/06/55/89/04/360_F_655890432_1b2rELT8YB3Xz7dU1c1niwuVX5zOpvva.jpg') no-repeat center center/cover;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('https://t3.ftcdn.net/jpg/06/55/89/04/360_F_655890432_1b2rELT8YB3Xz7dU1c1niwuVX5zOpvva.jpg') no-repeat center center/cover;
+      filter: blur(8px);
+      z-index: -1;
+    }
+
+    .login-container {
+      background: whitesmoke;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 0.5rem;
+    }
+    .login-container h1 {
+      color: #7E7900;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 1rem 1rem 1rem 2.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+      background: white;
+    }
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 0.75rem;
+      transform: translateY(-50%);
+      color: #7E7900;
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .submit-button {
+      color: whitesmoke;
+      background: black;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.3s ease, color 0.3s ease;
+      overflow: hidden;
+    }
+    .submit-button:hover {
+      color: #7E7900;
+      transform: scale(1.02);
+    }
+
+    .plane-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.5s ease, opacity 0.3s ease;
+    }
+
+    .submit-button:hover {
+      color: #7E7900;
+      transform: scale(1.02);
+    }
+
+    .submit-button:hover .plane-icon {
+      transform: translateX(50px) translateY(-50px) rotate(0deg);
+      opacity: 0.7;
+    }
+
+    .github-icon {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+    }
+    .github-icon i {
+      font-size: 2rem;
+      color: black;
+      transition: transform 0.3s ease;
+    }
+    .github-icon i:hover {
+      transform: scale(1.2);
+      color: #7E7900;
+    }
+  </style>
+</head>
+<body>
+<form>
+<div class="login-container">
+  <h1>Üdvözöljük!</h1>
+
+  <form>
+    <div class="input-group">
+      <i class="fa-solid fa-envelope"></i>
+      <input id="email" type="email" name="email" placeholder="E-mail cím" required>
+    </div>
+    <div class="input-group">
+      <i class="fa-solid fa-user"></i>
+      <input id="fullName" type="text" name="fullName" placeholder="Teljes név" required>
+    </div>
+    <div class="input-group">
+      <i class="fa-solid fa-lock"></i>
+      <input id="password" type="password" name="password" placeholder="Jelszó" required>
+    </div>
+    <button class="submit-button" type="submit">
+      <span class="plane-icon">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span class="plane-trail"></span>
+      </span>
+      Regisztráció
+    </button>
+  </form>
+
+  <div class="github-icon">
+    <a href="https://github.com/Aron0228" target="_blank" style="text-decoration: none; color: black;">
+      <i class="fa-brands fa-github"></i>
+    </a>
+  </div>
+</div>
+</form>
+</body>
+</html>

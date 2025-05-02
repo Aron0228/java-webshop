@@ -33,4 +33,39 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegistrationRequest request) {
         return authService.register(request);
     }
+
+    @PostMapping("/login/check-credentials")
+    public ResponseEntity<?> checkLoginCredentials(@RequestBody AuthRequest request) {
+        try {
+            boolean valid = authService.checkLoginCredentials(request);
+            if (valid) {
+                return ResponseEntity.ok().body("valid");
+            } else {
+                return ResponseEntity.status(401).body("invalid");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("error");
+        }
+    }
+
+    @PostMapping("/register/check-credentials")
+    public ResponseEntity<?> checkRegistrationCredentials(@RequestBody RegistrationRequest request) {
+        try {
+            boolean valid = authService.checkRegistrationCredentials(request);
+            boolean passwordValid = authService.checkRegistrationPassword(request);
+            boolean nameValid = authService.checkFullName(request);
+            if (valid && passwordValid && nameValid) {
+                return ResponseEntity.ok().body("valid");
+            }
+            else if (!passwordValid) {
+                return ResponseEntity.status(401).body("invalid password");
+            }
+            else if (!nameValid) {
+                return ResponseEntity.status(401).body("invalid name");
+            }
+            return ResponseEntity.status(401).body("invalid email");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("error");
+        }
+    }
 }

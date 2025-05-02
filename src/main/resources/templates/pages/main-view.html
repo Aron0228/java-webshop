@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="hu">
+<html lang="hu" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Főoldal</title>
@@ -439,6 +439,7 @@
     }
     
     .price-tag {
+      margin: auto;
       font-size: 2rem;
       font-weight: bold;
     }
@@ -493,18 +494,18 @@
   <div class="content-left">
     <div class="categories-side-bar">
       <h2>Kategóriák</h2>
-      <div class="category">
-        <i class="fa-solid fa-image"></i>
-        <p>Category1</p>
+      <div class="category" th:each="category : ${categories}">
+        <i th:class="${category.getFaClass()}"></i>
+        <p th:text="${category.getName()}"></p>
       </div>
-      <div class="category">
+      <!-- <div class="category">
         <i class="fa-solid fa-camera"></i>
         <p>Category2</p>
       </div>
       <div class="category">
         <i class="fa-solid fa-truck"></i>
         <p>Category3</p>
-      </div>
+      </div> -->
     </div>
   </div>
   
@@ -518,27 +519,27 @@
       <div>
         <section class="container">
           <div class="slider-wrapper">
-            <p>Kiemelt akcióink</p>
+            <p>Kiemelt ajánlataink</p>
             <button class="slider-action-button">Fedezd fel!</button>
             <button class="slider-arrow left" id="prevSlide">&#10094;</button>
             <div class="slider">
-              <img id="slide-1" src="https://images.unsplash.com/photo-1656464868371-602be27fd4c2?ixlib=rb-
-1.2.1&ixid=MnwxMjA3fDB8MHxwaG9@by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
+              <img th:each="carouselItem : ${carouselItems}" th:id="${'slide-' + carouselItem.getId()}" th:src="${carouselItem.getB64Image()}" alt="3D rendering of an imaginary orange planet in
 space">
-              <img id="slide-2" src="https://images.unsplash.com/photo-1657586640569-4a3d4577328c?ixlib=rb-
+              <!--<img id="slide-2" src="https://images.unsplash.com/photo-1657586640569-4a3d4577328c?ixlib=rb-
 1.2.1&ixid=MnwxMjA3fDB8MHxwaG9@by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
 space">
               <img id="slide-3" src="https://images.unsplash.com/photo-
 1656077217715-bdaeb06bd01f?ixlib=rb-
 1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
-space">
+space">-->
             </div>
             <button class="slider-arrow right" id="nextSlide">&#10095;</button>
             
             <div class="slider-nav">
-              <a href="#slide-1"></a>
-              <a href="#slide-2"></a>
-              <a href="#slide-3"></a>
+              <a th:each="carouselItem : ${carouselItems}"
+                 th:href="${'#slide-' + carouselItem.getId()}"></a>
+              <!--<a href="#slide-2"></a>
+              <a href="#slide-3"></a>-->
             </div>
           </div>
         </section>
@@ -546,8 +547,43 @@ space">
     </div>
     
     <div class="products-list">
+      <div class="product" th:each="product : ${products}">
+        <img th:src="${product.getB64Image()}" alt="3D rendering of an imaginary orange planet in
+space">
+        <div class="product-description">
+          <h1 th:text="${product.getName()}"></h1>
+          <p th:text="${product.getDescription()}"></p>
+        </div>
+        <p class="price-tag" th:text="${product.getPrice()} + ' Ft'"></p>
+        <button>
+          <i class="fa-solid fa-shopping-cart"></i>
+          Kosárba
+        </button>
+      </div>
+      <script>
+        document.querySelectorAll('.add-to-cart-button').forEach(button => {
+          button.addEventListener('click', function () {
+            const productId = this.dataset.id;
+            
+            fetch('/cart/add', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: `productId=${productId}`
+            })
+              .then(response => {
+                if (response.ok) {
+                  console.log("Sikeresen hozzáadva a kosárhoz");
+                } else {
+                  console.error("Hiba történt a kosárhoz adáskor");
+                }
+              });
+          });
+        });
+      </script>
       
-      <div class="product">
+      <!--<div class="product">
         <img src="https://images.unsplash.com/photo-
 1656077217715-bdaeb06bd01f?ixlib=rb-
 1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit =crop&w=1200&q=80" alt="3D rendering of an imaginary orange planet in
@@ -606,7 +642,7 @@ space">
           <i class="fa-solid fa-shopping-cart"></i>
           Kosárba
         </button>
-      </div>
+      </div> -->
     
     </div>
   </div>

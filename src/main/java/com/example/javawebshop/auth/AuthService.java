@@ -92,4 +92,28 @@ public class AuthService {
 
         return ResponseEntity.ok(new AuthResponse(token));
     }
+
+    public boolean checkLoginCredentials(AuthRequest request) {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            User user = userRepository.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+            return passwordEncoder.matches(request.getPassword(), user.getPassword());
+        }
+
+        return false;
+    }
+
+    public boolean checkRegistrationCredentials(RegistrationRequest request) {
+        return !userRepository.existsByEmail(request.getEmail());
+    }
+
+    public boolean checkRegistrationPassword(RegistrationRequest request) {
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+        return request.getPassword().matches(regex) && request.getPassword().length() >= 8;
+    }
+
+    public boolean checkFullName(RegistrationRequest request) {
+        String regex = "^[A-Z][a-zA-Z]* [A-Z][a-zA-Z]*$";
+        return request.getFullName().matches(regex);
+    }
 }

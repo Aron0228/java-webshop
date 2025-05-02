@@ -55,7 +55,7 @@ public class AuthViewController {
                 }
             }
 
-            return "redirect:/home";
+            return "redirect:/";
         }
         catch (Exception e) {
             model.addAttribute("error", "Sikertelen bejelentkezés");

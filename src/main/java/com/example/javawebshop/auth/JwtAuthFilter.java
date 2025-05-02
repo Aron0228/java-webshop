@@ -34,6 +34,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, java.io.IOException {
 
+        String path = request.getRequestURI();
+
+        // Ne fuss le auth endpointokra
+        if (path.startsWith("/api/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        // innentől jöhet csak a JWT kezelése
         String token = null;
 
         String authHeader = request.getHeader("Authorization");
@@ -70,4 +79,5 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
+
 }

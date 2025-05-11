@@ -1,23 +1,114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-      body {
-        background: white;
-      }
-
-      header {
-        background: black;
-      }
-
-      img {
-        filter: invert(0.45) sepia(1) hue-rotate(20deg) saturate(500%) brightness(80%);
-      }
-    </style>
+  <meta charset="UTF-8">
+  <title>Featured Coffees Carousel</title>
+  <style>
+    body {
+      font-family: 'Georgia', serif;
+      background: #f5f0ea;
+      margin: 0;
+      padding: 40px;
+    }
+    
+    h2 {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .carousel {
+      display: flex;
+      transition: transform 0.3s ease-in-out;
+    }
+    
+    .card {
+      min-width: 300px;
+      background: #fff5eb;
+      border-radius: 20px;
+      text-align: center;
+      margin: 0 15px;
+      padding: 20px;
+      flex-shrink: 0;
+    }
+    
+    .card img {
+      width: 150px;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    
+    .card-title {
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+    
+    .price {
+      font-weight: bold;
+    }
+    
+    .nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #fff;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    
+    .nav-left {
+      left: 0;
+    }
+    
+    .nav-right {
+      right: 0;
+    }
+  </style>
 </head>
 <body>
-<img src="https://static-00.iconduck.com/assets.00/spring-boot-icon-512x511-pza8zvqu.png" alt="">
+
+<h2>Featured coffees</h2>
+<div class="carousel-container">
+  <button class="nav-button nav-left" onclick="scrollCarousel(-1)">←</button>
+  <div class="carousel" id="carousel">
+    <div class="card">
+      <img src="kenya.png" alt="Kenya Kirinyaga">
+      <div class="card-title">Kenya Kirinyaga Washed</div>
+      <div class="price">$25</div>
+    </div>
+    <div class="card">
+      <img src="funky-chicken.png" alt="Funky Chicken">
+      <div class="card-title">Organic Funky Chicken</div>
+      <div class="price">$18</div>
+    </div>
+    <div class="card">
+      <img src="ethiopia.png" alt="Ethiopia Worka">
+      <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+      <div class="price">$24</div>
+    </div>
+  </div>
+  <button class="nav-button nav-right" onclick="scrollCarousel(1)">→</button>
+</div>
+
+<script>
+  const carousel = document.getElementById('carousel');
+  let scrollAmount = 0;
+  
+  function scrollCarousel(direction) {
+    const cardWidth = 330; // Card width + margin
+    scrollAmount += direction * cardWidth;
+    carousel.style.transform = `translateX(${-scrollAmount}px)`;
+  }
+</script>
+
 </body>
 </html>

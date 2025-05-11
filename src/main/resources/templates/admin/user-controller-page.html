@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Users</title>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.edit-user').forEach(button => {
+        button.addEventListener('click', () => {
+          const inputs = button.closest('.user-card').querySelectorAll('input');
+          const currentlyEditing = !inputs[0].readOnly;
+          inputs.forEach(input => input.readOnly = currentlyEditing);
+          button.textContent = currentlyEditing ? 'Szerkesztés' : 'Mentés';
+        });
+      });
+      
+      // Modal kezelés
+      const modal = document.getElementById('password-modal');
+      const newPasswordInput = document.getElementById('new-password');
+      let currentUser = null;
+      
+      document.querySelectorAll('.edit-password').forEach(button => {
+        button.addEventListener('click', () => {
+          currentUser = button.closest('.user-card');
+          newPasswordInput.value = '';
+          modal.classList.remove('hidden');
+        });
+      });
+      
+      document.getElementById('cancel-password').addEventListener('click', () => {
+        modal.classList.add('hidden');
+        currentUser = null;
+      });
+      
+      document.getElementById('save-password').addEventListener('click', () => {
+        const newPassword = newPasswordInput.value.trim();
+        if (newPassword.length < 6) {
+          alert('A jelszónak legalább 6 karakter hosszúnak kell lennie.');
+          return;
+        }
+        
+        // Itt történhetne a jelszóküldés pl. fetch()-el a szerver felé
+        alert(`Jelszó frissítve: ${newPassword}`);
+        
+        modal.classList.add('hidden');
+        currentUser = null;
+      });
+    });
+  </script>
+  
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4ebe4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .user-grid {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .user-card {
+      background-color: white;
+      margin: 1rem;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .user-card label {
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .user-card input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    
+    .card-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .edit-user,
+    .delete-user {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .edit-user {
+      background-color: #5bc0de;
+      color: white;
+    }
+    
+    .edit-user:hover {
+      background-color: #31b0d5;
+    }
+    
+    .delete-user {
+      background-color: #d9534f;
+      color: white;
+    }
+    
+    .delete-user:hover {
+      background-color: #c9302c;
+    }
+    
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .modal-content {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 300px;
+    }
+    
+    .modal-content input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    
+    .modal-actions button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    
+    #save-password {
+      background-color: #5cb85c;
+      color: white;
+    }
+    
+    #cancel-password {
+      background-color: #d9534f;
+      color: white;
+    }
+    
+    .edit-password {
+      background-color: #f0ad4e;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .edit-password:hover {
+      background-color: #ec971f;
+    }
+  
+  </style>
+</head>
+<body>
+<div class="user-management">
+  <h2>Felhasználók kezelése</h2>
+  <div class="user-grid">
+    <div class="user-card">
+      <label>Név:
+        <input type="text" value="Kovács Anna" readonly>
+      </label>
+      <label>Email:
+        <input type="text" value="anna@example.com" readonly>
+      </label>
+      <div class="card-actions">
+        <button class="edit-password">Jelszó szerkesztése</button>
+        <button class="edit-user">Szerkesztés</button>
+        <button class="delete-user">Törlés</button>
+      </div>
+    </div>
+    <div class="user-card">
+      <label>Név:
+        <input type="text" value="Szabó Péter" readonly>
+      </label>
+      <label>Email:
+        <input type="text" value="peter@example.com" readonly>
+      </label>
+      <div class="card-actions">
+        <button class="edit-password">Jelszó szerkesztése</button>
+        <button class="edit-user">Szerkesztés</button>
+        <button class="delete-user">Törlés</button>
+      </div>
+    </div>
+    <div class="user-card">
+      <label>Név:
+        <input type="text" value="Szabó Péter" readonly>
+      </label>
+      <label>Email:
+        <input type="text" value="peter@example.com" readonly>
+      </label>
+      <div class="card-actions">
+        <button class="edit-password">Jelszó szerkesztése</button>
+        <button class="edit-user">Szerkesztés</button>
+        <button class="delete-user">Törlés</button>
+      </div>
+    </div>
+    <div class="user-card">
+      <label>Név:
+        <input type="text" value="Szabó Péter" readonly>
+      </label>
+      <label>Email:
+        <input type="text" value="peter@example.com" readonly>
+      </label>
+      <div class="card-actions">
+        <button class="edit-password">Jelszó szerkesztése</button>
+        <button class="edit-user">Szerkesztés</button>
+        <button class="delete-user">Törlés</button>
+      </div>
+    </div>
+    <div class="user-card">
+      <label>Név:
+        <input type="text" value="Szabó Péter" readonly>
+      </label>
+      <label>Email:
+        <input type="text" value="peter@example.com" readonly>
+      </label>
+      <div class="card-actions">
+        <button class="edit-password">Jelszó szerkesztése</button>
+        <button class="edit-user">Szerkesztés</button>
+        <button class="delete-user">Törlés</button>
+      </div>
+    </div>
+</div>
+
+<div id="password-modal" class="modal hidden">
+  <div class="modal-content">
+    <h3>Új jelszó megadása</h3>
+    <input type="password" id="new-password" placeholder="Új jelszó">
+    <div class="modal-actions">
+      <button id="save-password">Mentés</button>
+      <button id="cancel-password">Mégse</button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

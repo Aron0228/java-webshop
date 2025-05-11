@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Rendeléskezelés</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4ebe4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    
+    h2 {
+      margin-bottom: 2rem;
+    }
+    
+    .order-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 800px;
+    }
+    
+    .order-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .order-card label {
+      font-weight: bold;
+    }
+    
+    .order-card .status-select {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      margin-top: 0.5rem;
+      width: fit-content;
+    }
+    
+    .card-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .update-status,
+    .delete-order {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    
+    .update-status {
+      background-color: #5cb85c;
+      color: white;
+    }
+    
+    .update-status:hover {
+      background-color: #4cae4c;
+    }
+    
+    .delete-order {
+      background-color: #d9534f;
+      color: white;
+    }
+    
+    .delete-order:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Rendelések kezelése</h2>
+<div class="order-grid">
+  
+  <!-- Példa rendelés -->
+  <div class="order-card" data-id="1">
+    <label>Vásárló: <span class="customer-name">Kiss János</span></label>
+    <label>Termék(ek): <span class="products">Példa Termék 1, Példa Termék 2</span></label>
+    <label>Státusz:</label>
+    <select class="status-select">
+      <option>Függőben</option>
+      <option>Kiszállítva</option>
+      <option>Törölve</option>
+    </select>
+    <div class="card-actions">
+      <button class="update-status">Mentés</button>
+      <button class="delete-order">Törlés</button>
+    </div>
+  </div>
+  
+  <!-- Másik rendelés -->
+  <div class="order-card" data-id="2">
+    <label>Vásárló: <span class="customer-name">Nagy Eszter</span></label>
+    <label>Termék(ek): <span class="products">Termék C</span></label>
+    <label>Státusz:</label>
+    <select class="status-select">
+      <option>Függőben</option>
+      <option>Kiszállítva</option>
+      <option>Törölve</option>
+    </select>
+    <div class="card-actions">
+      <button class="update-status">Mentés</button>
+      <button class="delete-order">Törlés</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  document.querySelectorAll('.delete-order').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.order-card');
+      card.remove(); // Itt küldhetnél backendre is törlést
+    });
+  });
+  
+  document.querySelectorAll('.update-status').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.order-card');
+      const status = card.querySelector('.status-select').value;
+      alert('Státusz frissítve: ' + status);
+      // Itt küldhetnél backendre is update-et
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+<div th:fragment="siteHeader">
+  <header>
+    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png" alt="">
+    
+    <div class="nav-menus-items">
+    <span class="categories-menu-item">
+      Categories
+      <i class="fa-solid fa-arrow-up"></i>
+    </span>
+      <div class="categories-menu">
+        
+        <div class="categories">
+          <div class="category-column">
+            <h3>Coffee</h3>
+            <ul>
+              <li>Light Roast</li>
+              <li>Medium Roast</li>
+              <li>Dark Roast</li>
+            </ul>
+            <div style="height: 0.25rem;"></div>
+            <ul>
+              <li>Single Origin</li>
+              <li>Decaf</li>
+              <li>Single Serve</li>
+              <li>Shop All</li>
+            </ul>
+          </div>
+          <div class="category-column">
+            <h3>Everything Else</h3>
+            <ul>
+              <li>Everything Else</li>
+              <li>Gift Card</li>
+              <li>Equipment</li>
+              <li>Tea</li>
+              <li>Syrup</li>
+              <li>All Merch</li>
+            </ul>
+            <div style="height: 0.25rem;"></div>
+            <ul>
+              <li>Apparel</li>
+              <li>Hats</li>
+              <li>Drinkware</li>
+              <li>Accessories</li>
+            </ul>
+          </div>
+        </div>
+        
+        
+        <div class="carousel-nav">
+          <div>
+            <span class="featured-products-text">Featured products</span>
+          </div>
+          <div>
+            <button class="nav-button nav-left" onclick="scrollCarousel(-1)">
+              <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <button class="nav-button nav-right" onclick="scrollCarousel(1)">
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          
+          <div class="carousel-container">
+            <div class="carousel" id="carousel">
+              <div class="card">
+                <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
+                <div class="card-title">Kenya Kirinyaga Washed</div>
+                <div class="price">$25</div>
+              </div>
+              <div class="card">
+                <img src="https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png&w=1400" alt="Funky Chicken">
+                <div class="card-title">Organic Funky Chicken</div>
+                <div class="price">$18</div>
+              </div>
+              <div class="card">
+                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+                <div class="price">$24</div>
+              </div>
+              <div class="card">
+                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+                <div class="price">$24</div>
+              </div>
+              <div class="card">
+                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+                <div class="price">$24</div>
+              </div>
+              <div class="card">
+                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+                <div class="price">$24</div>
+              </div>
+            </div>
+          </div>
+        
+        </div>
+      
+      </div>
+    </div>
+    
+    <div class="nav-items">
+      <div class="welcome-wrapper">
+        <div class="welcome-text-ghost" th:text="${welcomeText}"></div>
+        <div class="welcome-text" th:attr="data-text=${welcomeText}"></div>
+      </div>
+      <i class="fa-regular fa-user" id="profile-icon"></i>
+      <div class="dropdown-modal" id="profile-dropdown">
+        <th:block th:each="action : ${profileActions}">
+          <button th:text="${action.actionName}"
+                  th:onclick="'location.href=\'' + @{${action.href}} + '\''">
+          </button>
+        </th:block>
+      </div>
+      
+      <div class="cart">
+        Cart
+        <span class="cart-item-counter" id="my-cart-counter"></span>
+      </div>
+    </div>
+  </header>
+</div>

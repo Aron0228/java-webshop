@@ -1,5 +1,6 @@
 package com.example.javawebshop.auth;
 
+import com.example.javawebshop.entities.Role;
 import com.example.javawebshop.entities.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -41,6 +42,15 @@ public class JwtService {
         }
     }
 
+    public Optional<Role> extractRole(String token) {
+        try {
+            Claims claims = extractClaims(token);
+            String roleName = claims.get("role", String.class);
+            return Optional.of(Role.valueOf(roleName));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
 
     public boolean isTokenValid(String token, CustomUserDetails userDetails) {
         return extractUserId(token)

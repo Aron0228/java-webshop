@@ -1,11 +1,16 @@
 package com.example.javawebshop.auth;
 
+import com.example.javawebshop.dto.LoginRequest;
+import com.example.javawebshop.dto.LoginResponse;
+import com.example.javawebshop.dto.RegistrationRequest;
+import com.example.javawebshop.dto.RegistrationResponse;
 import com.example.javawebshop.entities.Role;
 import com.example.javawebshop.entities.User;
 import com.example.javawebshop.repositories.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,11 +37,16 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public ResponseEntity<?> login(AuthRequest authRequest, HttpServletResponse response) {
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, HttpServletResponse response) {
+        if (!checkLoginEmail(loginRequest)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(null, "User not found"));
+        }
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            authRequest.getEmail(), authRequest.getPassword())
+                            loginRequest.getEmail(), loginRequest.getPassword())
             );
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
@@ -56,10 +66,12 @@ public class AuthService {
 
             response.setHeader(HttpHeaders.SET_COOKIE, cookie);
 
-            return ResponseEntity.ok("Login successful");
+            return ResponseEntity.ok(new LoginResponse(user.getId(), null));
 
         } catch (AuthenticationException e) {
-            return ResponseEntity.status(401).body("Invalid credentials");
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(new LoginResponse(null, e.getMessage()));
         }
     }
 
@@ -71,12 +83,22 @@ public class AuthService {
         cookie.setMaxAge(0);
 
         response.addCookie(cookie);
+
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<AuthResponse> register(RegistrationRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<RegistrationResponse> register(RegistrationRequest request) {
+        if (!checkRegistrationEmail(request)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new RegistrationResponse("Email already in use"));
+        }
+        if (!checkFullName(request)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new RegistrationResponse("Name is wrong"));
+        }
+        if (!checkRegistrationPassword(request)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new RegistrationResponse("Password is wrong"));
         }
 
         User user = new User(
@@ -85,35 +107,53 @@ public class AuthService {
                 passwordEncoder.encode(request.getPassword()),
                 Role.USER
         );
-
         userRepository.save(user);
 
-        String token = jwtService.generateToken(user);
-
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(new RegistrationResponse("ok"));
     }
 
-    public boolean checkLoginCredentials(AuthRequest request) {
+    public String checkLoginCredentials(LoginRequest loginRequest) {
+        return checkLoginEmail(loginRequest) ? "OK" : "User not found";
+    }
+
+    public String checkRegistrationCredentials(RegistrationRequest registrationRequest) {
+        if (!checkRegistrationEmail(registrationRequest)) {
+            return "Email already in use";
+        }
+        if (!checkFullName(registrationRequest)) {
+            return "Name is wrong";
+        }
+        if (!checkRegistrationPassword(registrationRequest)) {
+            return "Password is wrong";
+        }
+
+        return "OK";
+    }
+
+    private boolean checkLoginEmail(LoginRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
             User user = userRepository.findByEmail(request.getEmail())
                     .orElseThrow(() -> new RuntimeException("User not found"));
+
             return passwordEncoder.matches(request.getPassword(), user.getPassword());
         }
 
         return false;
     }
 
-    public boolean checkRegistrationCredentials(RegistrationRequest request) {
+    private boolean checkRegistrationEmail(RegistrationRequest request) {
         return !userRepository.existsByEmail(request.getEmail());
     }
 
-    public boolean checkRegistrationPassword(RegistrationRequest request) {
+    private boolean checkRegistrationPassword(RegistrationRequest request) {
         String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+
         return request.getPassword().matches(regex) && request.getPassword().length() >= 8;
     }
 
-    public boolean checkFullName(RegistrationRequest request) {
+    private boolean checkFullName(RegistrationRequest request) {
         String regex = "^[A-Z][a-zA-Z]* [A-Z][a-zA-Z]*$";
+
         return request.getFullName().matches(regex);
     }
 }

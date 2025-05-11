@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Termékkezelés</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4ebe4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    
+    h2 {
+      margin-bottom: 1rem;
+    }
+    
+    .product-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+      max-width: 600px;
+    }
+    
+    .product-card {
+      background-color: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .product-card label {
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    
+    .product-card input {
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+    }
+    
+    .card-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .edit-product,
+    .delete-product,
+    .add-product {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      color: white;
+    }
+    
+    .edit-product {
+      background-color: #5bc0de;
+    }
+    
+    .edit-product:hover {
+      background-color: #31b0d5;
+    }
+    
+    .delete-product {
+      background-color: #d9534f;
+    }
+    
+    .delete-product:hover {
+      background-color: #c9302c;
+    }
+    
+    .add-product {
+      background-color: #5cb85c;
+      margin: 1rem 0;
+    }
+    
+    .add-product:hover {
+      background-color: #4cae4c;
+    }
+    
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      max-width: 400px;
+      width: 100%;
+    }
+    
+    .modal-content h3 {
+      margin-top: 0;
+    }
+    
+    .modal-content input {
+      width: 100%;
+      margin: 0.5rem 0;
+    }
+    
+    .modal-content button {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<h2>Termékek kezelése</h2>
+<button class="add-product" onclick="openModal()">+ Új termék</button>
+
+<div class="product-grid" id="productGrid">
+  <div class="product-card">
+    <label>Név:
+      <input type="text" value="Tej" readonly>
+    </label>
+    <label>Ár:
+      <input type="number" value="350" readonly>
+    </label>
+    <div class="card-actions">
+      <button class="edit-product">Szerkesztés</button>
+      <button class="delete-product">Törlés</button>
+    </div>
+  </div>
+  
+  <div class="product-card">
+    <label>Név:
+      <input type="text" value="Kenyér" readonly>
+    </label>
+    <label>Ár:
+      <input type="number" value="280" readonly>
+    </label>
+    <div class="card-actions">
+      <button class="edit-product">Szerkesztés</button>
+      <button class="delete-product">Törlés</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="productModal">
+  <div class="modal-content">
+    <h3>Új termék hozzáadása</h3>
+    <label>Név:
+      <input type="text" id="newName">
+    </label>
+    <label>Ár:
+      <input type="number" id="newPrice">
+    </label>
+    <button class="add-product" onclick="addProduct()">Hozzáadás</button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.edit-product').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.product-card');
+      const inputs = card.querySelectorAll('input');
+      const isReadOnly = inputs[0].readOnly;
+      inputs.forEach(input => input.readOnly = !isReadOnly);
+      button.textContent = isReadOnly ? 'Mentés' : 'Szerkesztés';
+    });
+  });
+  
+  document.querySelectorAll('.delete-product').forEach(button => {
+    button.addEventListener('click', () => {
+      const card = button.closest('.product-card');
+      card.remove();
+    });
+  });
+  
+  function openModal() {
+    document.getElementById('productModal').style.display = 'flex';
+  }
+  
+  function closeModal() {
+    document.getElementById('productModal').style.display = 'none';
+  }
+  
+  function addProduct() {
+    const name = document.getElementById('newName').value;
+    const price = document.getElementById('newPrice').value;
+    if (name.trim() === '' || price.trim() === '') return;
+    
+    const grid = document.getElementById('productGrid');
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <label>Név:
+        <input type="text" value="${name}" readonly>
+      </label>
+      <label>Ár:
+        <input type="number" value="${price}" readonly>
+      </label>
+      <div class="card-actions">
+        <button class="edit-product">Szerkesztés</button>
+        <button class="delete-product">Törlés</button>
+      </div>
+    `;
+    grid.appendChild(card);
+    closeModal();
+    
+    // Újonnan hozzáadott események
+    card.querySelector('.edit-product').addEventListener('click', function () {
+      const inputs = card.querySelectorAll('input');
+      const isReadOnly = inputs[0].readOnly;
+      inputs.forEach(input => input.readOnly = !isReadOnly);
+      this.textContent = isReadOnly ? 'Mentés' : 'Szerkesztés';
+    });
+    card.querySelector('.delete-product').addEventListener('click', function () {
+      card.remove();
+    });
+    
+    // Reset input fields
+    document.getElementById('newName').value = '';
+    document.getElementById('newPrice').value = '';
+  }
+  
+  // Close modal on outside click
+  window.addEventListener('click', function (event) {
+    const modal = document.getElementById('productModal');
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+</script>
+
+</body>
+</html>

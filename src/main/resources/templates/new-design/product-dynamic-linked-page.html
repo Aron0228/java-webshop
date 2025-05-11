@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Colombia Tolima Washed</title>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Text&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" th:href="@{/styles/header.css}">
+  <script th:src="@{/scripts/header.js}" defer></script>
+  
+  
+  <!-- <script>
+    function animateTextReveal(element, finalText, speed = 50) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-<>?/|';
+      let displayed = '';
+      let i = 0;
+      
+      function revealNextChar() {
+        if (i >= finalText.length) return;
+        
+        let interval = setInterval(() => {
+          element.textContent = displayed + chars[Math.floor(Math.random() * chars.length)];
+        }, speed / 3);
+        
+        setTimeout(() => {
+          clearInterval(interval);
+          displayed += finalText[i];
+          element.textContent = displayed;
+          i++;
+          revealNextChar();
+        }, speed);
+      }
+      
+      revealNextChar();
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      // welcome animation
+      const el = document.querySelector('.welcome-text');
+      const finalText = el.getAttribute('data-text');
+      animateTextReveal(el, finalText, 80);
+      
+      // scroll behavior
+      let lastScrollTop = 0;
+      const header = document.querySelector('header');
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        header.classList.toggle('hidden', scrollTop > lastScrollTop && scrollTop > 0);
+        lastScrollTop = Math.max(scrollTop, 0);
+      });
+      
+      // dropdown toggle
+      const categories = document.querySelector('.categories-menu-item');
+      categories.addEventListener('click', () => {
+        document.querySelector('.categories-menu').classList.toggle('hidden');
+        categories.classList.toggle('open');
+      });
+      
+      
+      const sortWrapper = document.querySelector('.sort-wrapper');
+      const sortMenu = document.querySelector('.sort-menu');
+      const sortToggle = document.querySelector('.sort-toggle');
+      
+      // Figyeljük a sort-wrapper kattintását
+      sortWrapper.addEventListener('click', () => {
+        // Ha a sort-wrapper aktív, mutatjuk a menüt
+        if (sortWrapper.classList.contains('active')) {
+          sortWrapper.classList.remove('active');
+        } else {
+          sortWrapper.classList.add('active');
+        }
+        
+        // Szimbólum váltás
+        sortToggle.textContent = sortWrapper.classList.contains('active') ? '–' : '+';
+      });
+    });
+  </script> -->
+  <style>
+    body {
+      padding: 0;
+      color: #222;
+      display: flex;
+      justify-content: center;
+      margin: 0;
+      background-color: #ece7e0;
+      font-family: 'Courier New', monospace;
+      overflow-y: scroll;
+    }
+    
+    .container {
+      margin-top: 6rem;
+      max-width: 1200px;
+      padding: 50px 20px;
+      display: flex;
+      gap: 60px;
+    }
+    
+    .left img {
+      width: 500px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .right {
+      max-width: 600px;
+    }
+    
+    .right h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .price {
+      font-size: 1.5rem;
+      margin: 10px 0 20px;
+    }
+    
+    .tags {
+      margin-bottom: 30px;
+    }
+    
+    .tag {
+      display: inline-block;
+      background-color: white;
+      border-radius: 20px;
+      padding: 5px 15px;
+      margin-right: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+    }
+    
+    .description {
+      line-height: 1.7;
+      margin-bottom: 30px;
+    }
+    
+    .notes {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 30px;
+    }
+    
+    .notes span::before {
+      content: '● ';
+      margin-right: 5px;
+    }
+    
+    .size-options,
+    .quantity-grind {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    
+    .option {
+      padding: 6px 16px;
+      border: 1px solid #333;
+      border-radius: 20px;
+      font-family: 'Space Mono', monospace;
+      cursor: pointer;
+    }
+    
+    .option.selected {
+      background-color: #123524;
+      color: white;
+    }
+    
+    .radio-group {
+      font-family: 'Space Mono', monospace;
+      margin-bottom: 30px;
+    }
+    
+    .radio-group label {
+      display: block;
+      margin: 5px 0;
+    }
+    
+    .add-to-cart {
+      background-color: #7f0d1e;
+      color: white;
+      font-family: 'Space Mono', monospace;
+      padding: 15px 30px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      display: block;
+      margin-left: auto;
+    }
+    
+    
+    .divider {
+      border-top: 1px solid #aaa;
+      margin: 30px 0;
+    }
+  </style>
+  
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("/cart/size");
+        if (response.ok) {
+          const text = await response.text();
+          const counter = document.getElementById('my-cart-counter');
+          counter.textContent = text;
+          
+          counter.classList.remove('pop-animation');
+          void counter.offsetWidth; // DOM reflow
+          counter.classList.add('pop-animation');
+          
+          console.log("Kosár mérete betöltve:", text);
+        } else {
+          console.error("Hiba a kosárméret lekérdezésében:", response.status);
+        }
+      } catch (error) {
+        console.error("AJAX hiba:", error);
+      }
+    });
+  </script> -->
+  
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: siteHeader}"></div>
+
+<!-- <header>
+  <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png" alt="">
+  
+  <div class="nav-menus-items">
+    <span class="categories-menu-item">
+      Categories
+      <i class="fa-solid fa-arrow-up"></i>
+    </span>
+    <div class="categories-menu">
+      
+      <div class="categories">
+        <div class="category-column">
+          <h3>Coffee</h3>
+          <ul>
+            <li>Light Roast</li>
+            <li>Medium Roast</li>
+            <li>Dark Roast</li>
+          </ul>
+          <div style="height: 0.25rem;"></div>
+          <ul>
+            <li>Single Origin</li>
+            <li>Decaf</li>
+            <li>Single Serve</li>
+            <li>Shop All</li>
+          </ul>
+        </div>
+        <div class="category-column">
+          <h3>Everything Else</h3>
+          <ul>
+            <li>Everything Else</li>
+            <li>Gift Card</li>
+            <li>Equipment</li>
+            <li>Tea</li>
+            <li>Syrup</li>
+            <li>All Merch</li>
+          </ul>
+          <div style="height: 0.25rem;"></div>
+          <ul>
+            <li>Apparel</li>
+            <li>Hats</li>
+            <li>Drinkware</li>
+            <li>Accessories</li>
+          </ul>
+        </div>
+      </div>
+      
+      
+      <div class="carousel-nav">
+        <div>
+          <span class="featured-products-text">Featured products</span>
+        </div>
+        <div>
+          <button class="nav-button nav-left" onclick="scrollCarousel(-1)">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button class="nav-button nav-right" onclick="scrollCarousel(1)">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        
+        <div class="carousel-container">
+          <div class="carousel" id="carousel">
+            <div class="card">
+              <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
+              <div class="card-title">Kenya Kirinyaga Washed</div>
+              <div class="price">$25</div>
+            </div>
+            <div class="card">
+              <img src="https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png&w=1400" alt="Funky Chicken">
+              <div class="card-title">Organic Funky Chicken</div>
+              <div class="price">$18</div>
+            </div>
+            <div class="card">
+              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+              <div class="price">$24</div>
+            </div>
+            <div class="card">
+              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+              <div class="price">$24</div>
+            </div>
+            <div class="card">
+              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+              <div class="price">$24</div>
+            </div>
+            <div class="card">
+              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
+              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
+              <div class="price">$24</div>
+            </div>
+          </div>
+        </div>
+        
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const carousel = document.getElementById('carousel');
+            if (!carousel) {
+              console.error("A 'carousel' elem nem található!");
+              return;
+            }
+            
+            const cardWidthRem = 24; // 10rem széles + 2x1rem margó + puffer
+            const cardsPerPage = 3;
+            const totalCards = carousel.children.length;
+            const maxIndex = totalCards - cardsPerPage;
+            let currentIndex = 0;
+            
+            function scrollCarousel(direction) {
+              currentIndex += direction;
+              if (currentIndex < 0) currentIndex = 0;
+              if (currentIndex > maxIndex) currentIndex = maxIndex;
+              
+              const scrollAmount = currentIndex * cardWidthRem;
+              carousel.style.transform = `translateX(${-scrollAmount}rem)`;
+            }
+            
+            // Ha máshonnan akarod elérni scrollCarousel-t:
+            window.scrollCarousel = scrollCarousel;
+          });
+        </script>
+      
+      </div>
+    
+    </div>
+  </div>
+  
+  <div class="nav-items">
+    <div class="welcome-wrapper">
+      <div class="welcome-text-ghost">Welcome, Áron!</div>
+      <div class="welcome-text" data-text="Welcome, Áron!"></div>
+    </div>
+    <i class="fa-regular fa-user"></i>
+    <div class="cart">
+      Cart
+      <span class="cart-item-counter" id="my-cart-counter">0</span>
+    </div>
+  </div>
+</header> -->
+
+<div class="container">
+  
+  <div class="left">
+    <img th:src="${product.getB64Image()}" alt="img">
+  </div>
+  <div class="right">
+    <h1 th:text="${product.getName()}"></h1>
+    <div class="price" th:text="'$' + ${product.getPrice()}"></div>
+    <div class="tags">
+      <span class="tag" th:text="${product.getCard()}"></span>
+    </div>
+    <div class="description" th:text="${product.getDescription()}">
+    </div>
+    <div class="divider"></div>
+    <div class="size-options">
+      <span>Size:</span>
+      <div class="option selected" th:text="${product.getPackaging()} + 'oz'"></div>
+    </div>
+    <div class="divider"></div>
+    <div class="quantity-grind">
+      <div class="option" id="minus">-</div>
+      <div class="option selected" id="selected">1</div>
+      <div class="option" id="plus">+</div>
+      <button class="add-to-cart" id="add-to-cart-btn">Add to Cart</button>
+    </div>
+    
+    <script>
+      const minusButton = document.getElementById('minus');
+      const plusButton = document.getElementById('plus');
+      const selectedNum = document.getElementById('selected');
+      
+      minusButton.addEventListener('click', () => {
+        if (Number(selectedNum.innerText) > 0) {
+          selectedNum.innerText = (Number(selectedNum.innerText) - 1).toString();
+        }
+      })
+      plusButton.addEventListener('click', () => {
+        selectedNum.innerText = (Number(selectedNum.innerText) + 1).toString();
+      })
+    </script>
+    
+    <script th:inline="javascript">
+      document.addEventListener('DOMContentLoaded', function () {
+        const addToCartBtn = document.getElementById('add-to-cart-btn');
+        
+        if (!addToCartBtn) return; // ha mégsem található a gomb, ne folytassuk
+        
+        addToCartBtn.addEventListener('click', async () => {
+          const productId = [[${product.getId()}]];
+          const selectedNum = document.getElementById('selected');
+          const quantity = Number(selectedNum?.innerText || 0);
+          console.log(productId);
+          
+          try {
+            const cartAddResponse = await fetch('/cart/add', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ productId, quantity })
+            });
+            
+            if (cartAddResponse.ok) {
+              console.log("Sikeresen hozzáadva a kosárhoz");
+            } else {
+              console.error("Hiba történt a kosárhoz adáskor");
+            }
+            
+            const cartSizeResponse = await fetch('http://localhost:8081/cart/size', {
+              method: 'GET',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            
+            if (cartSizeResponse.ok) {
+              const text = await cartSizeResponse.text();
+              const counter = document.getElementById('my-cart-counter');
+              if (counter) {
+                counter.textContent = text;
+                counter.classList.remove('pop-animation');
+                void counter.offsetWidth;
+                counter.classList.add('pop-animation');
+              }
+            } else {
+              console.error("Hiba történt a kosár méretének lekérdezésekor");
+            }
+          } catch (error) {
+            console.error("Hálózati hiba:", error);
+          }
+        });
+      });
+    </script>
+  
+  </div>
+  
+  <!-- <div class="left">
+    <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Colombia Coffee">
+  </div>
+  <div class="right">
+    <h1>Colombia Tolima Washed - Organic Certified®</h1>
+    <div class="price">$18</div>
+    <div class="tags">
+      <span class="tag">Medium Roast</span>
+      <span class="tag">Single Origin</span>
+    </div>
+    <div class="description">
+      This coffee is grown by smallholder farmers in the highlands of Tolima, Colombia.
+      This fully washed organic coffee is rich and balanced, with bright citrus acidity
+      and notes of red berries and chocolate.
+    </div>
+    <div class="divider"></div>
+    <div class="size-options">
+      <span>Size:</span>
+      <div class="option selected">10oz</div>
+      <div class="option">2LB</div>
+      <div class="option">5LB</div>
+    </div>
+    <div class="divider"></div>
+    <div class="quantity-grind">
+      <div class="option">-</div>
+      <div class="option selected">1</div>
+      <div class="option">+</div>
+      <button class="add-to-cart">Add to Cart</button>
+    </div>
+  </div>-->
+</div>
+</body>
+</html>

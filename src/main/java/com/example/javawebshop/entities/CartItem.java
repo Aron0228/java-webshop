@@ -10,13 +10,13 @@ public class CartItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long cartId;
+    private Long userId;
     private Long productId;
     private int quantity;
 
     public CartItem() {}
-    public CartItem(Long cartId, Long productId, int quantity) {
-        this.cartId = cartId;
+    public CartItem(Long userId, Long productId, int quantity) {
+        this.userId = userId;
         this.productId = productId;
         this.quantity = quantity;
     }
@@ -27,11 +27,11 @@ public class CartItem {
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getCartId() {
-        return cartId;
+    public Long getUserId() {
+        return userId;
     }
-    public void setCartId(Long cartId) {
-        this.cartId = cartId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
     public Long getProductId() {
         return productId;

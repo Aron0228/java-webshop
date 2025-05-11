@@ -1,35 +1,28 @@
 package com.example.javawebshop.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 public class Cart {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long userId;
+    private List<CartItem> cartItems;
+    private String key;
+    private int total;
 
     public Cart() {}
-    public Cart(Long userId) {
-        this.userId = userId;
+    public Cart(List<CartItem> cartItems, String key, int total) {
+        this.cartItems = cartItems;
+        this.key = key;
+        this.total = total;
     }
-
-    public Long getId() {
-        return id;
+    public List<CartItem> getCartItems() {
+        return cartItems;
     }
-    public void setId(Long id) {
-        this.id = id;
+    public void addCartItem(CartItem cartItem) {
+        cartItems.add(cartItem);
     }
-    public Long getUserId() {
-        return userId;
+    public void removeCartItem(CartItem cartItem) {
+        cartItems.remove(cartItem);
     }
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public String getKey() {
+        return key;
     }
 }

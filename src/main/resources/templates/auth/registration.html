@@ -232,7 +232,7 @@
     const password = document.getElementById('password').value;
     
     fetch('/api/auth/register/check-credentials', {
-      method: 'POST',
+      method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, fullName, password })
     })

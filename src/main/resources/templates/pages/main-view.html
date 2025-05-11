@@ -66,7 +66,8 @@
       
       // Beállítjuk ugyanezt a magasságot a left divre
       left.style.minHeight = `${rightHeight - 8}px`;
-      left.style.background = '#CCAA37';
+      //left.style.background = '#CCAA37';
+      left.style.background = '#7E7900';
     });
     
     window.addEventListener("load", () => {
@@ -76,7 +77,7 @@
       const rightHeight = right.offsetHeight;
       
       left.style.minHeight = `${rightHeight - 8}px`;
-      left.style.background = '#CCAA37';
+      left.style.background = '#7E7900';
     });
   </script>
   <style>
@@ -166,8 +167,37 @@
     }
     
     .nav-item i {
-      color: whitesmoke;
+      background: whitesmoke;
+      border: 4px solid whitesmoke;
+      color: black;
       font-size: 1.5rem;
+      
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      border-radius: 50%;
+      display: inline-block;
+      
+      position: relative;
+    }
+    
+    .cart-item-counter {
+      font-size: 0.75rem;
+      color: whitesmoke;
+      background: black;
+      border: 2px solid black;
+      
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 50%;
+      display: inline-block;
+      
+      position: absolute;
+      top: -8px;
+      right: -12px;
     }
     
     .nav-item:hover {
@@ -361,7 +391,8 @@
     
     .categories-side-bar {
       padding: 2rem;
-      background-color: #CCAA37;
+      /*background-color: #CCAA37;*/
+      background: #7E7900;
       color: black;
       display: flex;
       flex-direction: column;
@@ -444,7 +475,7 @@
       font-weight: bold;
     }
     
-    .product button {
+    .add-to-cart-button {
       color: white;
       font-size: 1rem;
       cursor: pointer;
@@ -470,7 +501,70 @@
     .content-right {
       flex: 1;
     }
+    
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.4); }
+      100% { transform: scale(1); }
+    }
+    
+    .cart-item-counter.pop-animation {
+      animation: pop 0.3s ease;
+    }
+    
+    .products-list nav {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    
+    .products-list nav ul {
+      display: flex;
+      gap: 0.5rem;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .products-list nav li {
+      background: #f1f1f1;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      color: #333;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    
+    .products-list nav li:hover {
+      background: #7E7900;
+      color: white;
+    }
+    
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("/cart/size");
+        if (response.ok) {
+          const text = await response.text();
+          const counter = document.getElementById('my-cart-counter');
+          counter.textContent = text;
+          
+          counter.classList.remove('pop-animation');
+          void counter.offsetWidth; // DOM reflow
+          counter.classList.add('pop-animation');
+          
+          console.log("Kosár mérete betöltve:", text);
+        } else {
+          console.error("Hiba a kosárméret lekérdezésében:", response.status);
+        }
+      } catch (error) {
+        console.error("AJAX hiba:", error);
+      }
+    });
+  </script>
 </head>
 <body>
 <div class="header-nav">
@@ -484,7 +578,9 @@
       <p>Bejelentkezés</p>
     </div>
     <div class="nav-item">
-      <i class="fa-solid fa-shopping-cart"></i>
+      <i class="fa fa-shopping-cart">
+        <span class="cart-item-counter" id="my-cart-counter">0</span>
+      </i>
       <p>Kosaram</p>
     </div>
   </div>
@@ -555,30 +651,63 @@ space">
           <p th:text="${product.getDescription()}"></p>
         </div>
         <p class="price-tag" th:text="${product.getPrice()} + ' Ft'"></p>
-        <button>
+        <button th:id="${product.getId()}" class="add-to-cart-button">
           <i class="fa-solid fa-shopping-cart"></i>
           Kosárba
         </button>
       </div>
+      <nav>
+        <ul>
+          <li>1</li>
+          <li>2</li>
+          <li>3</li>
+        </ul>
+      </nav>
       <script>
         document.querySelectorAll('.add-to-cart-button').forEach(button => {
-          button.addEventListener('click', function () {
-            const productId = this.dataset.id;
+          button.addEventListener('click', async function () {
+            const productId = this.id;
             
-            fetch('/cart/add', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-              },
-              body: `productId=${productId}`
-            })
-              .then(response => {
-                if (response.ok) {
-                  console.log("Sikeresen hozzáadva a kosárhoz");
-                } else {
-                  console.error("Hiba történt a kosárhoz adáskor");
-                }
+            console.log(productId);
+            
+            try {
+              const cartAddResponse = await fetch('/cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId })
               });
+              
+              if (cartAddResponse.ok) {
+                console.log("Sikeresen hozzáadva a kosárhoz");
+                /*const text = await cartAddResponse.text();
+                const counter = document.getElementById('my-cart-counter');
+                counter.textContent = text
+                counter.classList.remove('pop-animation');
+                void counter.offsetWidth;
+                counter.classList.add('pop-animation');
+                console.log(text);*/
+              } else {
+                console.error("Hiba történt a kosárhoz adáskor");
+              }
+              
+              const cartSizeResponse = await fetch('cart/size', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+              });
+              
+              if (cartSizeResponse.ok) {
+                const text = await cartSizeResponse.text();
+                const counter = document.getElementById('my-cart-counter');
+                counter.textContent = text
+                counter.classList.remove('pop-animation');
+                void counter.offsetWidth;
+                counter.classList.add('pop-animation');
+              } else {
+                console.error("Hiba történt a kosárhoz adáskor");
+              }
+            } catch (error) {
+              console.error("Hálózati hiba:", error);
+            }
           });
         });
       </script>

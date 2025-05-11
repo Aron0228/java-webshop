@@ -1,0 +1,138 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4ebe4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 1rem;
+    width: 360px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+.login-box {
+    text-align: center;
+}
+
+.logo {
+    width: 10rem;
+    filter: invert(51%) sepia(81%) saturate(609%) hue-rotate(0deg) brightness(70%) contrast(60%);
+    padding: 1rem 2rem;
+}
+
+h2 {
+    margin: 0;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ccc;
+}
+
+.divider span {
+    margin: 0 0.5rem;
+    color: #777;
+    font-size: 0.8rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    background-color: white;
+}
+
+.input-group i {
+    margin-right: 0.5rem;
+    color: black;
+    font-size: 1.2rem;
+}
+
+.input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 1rem;
+}
+
+.login-btn {
+    width: 100%;
+    background: #770c1c;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.icon-link {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+    border: none;
+}
+
+.icon-link:hover,
+.icon-link:focus,
+.icon-link:active {
+    text-decoration: none;
+    color: inherit;
+}
+
+.fa-github {
+    margin-top: 2rem;
+    font-size: 2rem;
+}
+
+.custom-alert {
+    padding: 0.75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    display: block;
+}
+
+.custom-alert.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.custom-alert-danger {
+    color: #842029;
+    background-color: #f8d7da;
+    border-color: #f5c2c7;
+}
+
+.custom-alert-warning {
+    color: #664d03;
+    background-color: #fff3cd;
+    border-color: #ffecb5;
+}
+
+.custom-alert-success {
+    color: #0f5132;
+    background-color: #d1e7dd;
+    border-color: #badbcc;
+}

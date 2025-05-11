@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <title>Kategóriakezelés</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4ebe4;
+      padding: 2rem;
+    }
+    
+    .category-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .category-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .category-title {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .product-list {
+      margin-left: 1rem;
+      color: #555;
+    }
+    
+    .actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+    
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      color: white;
+    }
+    
+    .btn-edit {
+      background: #5bc0de;
+    }
+    
+    .btn-edit:hover {
+      background: #31b0d5;
+    }
+    
+    .btn-delete {
+      height: fit-content;
+      background: #d9534f;
+    }
+    
+    .btn-delete:hover {
+      background: #c9302c;
+    }
+    
+    .btn-add {
+      background: #5cb85c;
+      margin-bottom: 2rem;
+    }
+    
+    .btn-add:hover {
+      background: #4cae4c;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      width: 400px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .modal input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+    }
+    
+    .product-select {
+      margin-top: 1rem;
+    }
+    
+    .product-select label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<button class="btn btn-add" onclick="openModal()">+ Új kategória</button>
+
+<div class="category-grid" id="categoryGrid"></div>
+
+<div class="modal" id="categoryModal">
+  <div class="modal-content">
+    <h3>Kategória szerkesztése</h3>
+    <input type="text" id="categoryNameInput" placeholder="Kategória neve">
+    <input type="text" id="productSearch" placeholder="Termék keresése...">
+    
+    <div class="product-select" id="productList"></div>
+    
+    <div class="modal-buttons">
+      <button class="btn btn-delete" onclick="closeModal()">Mégse</button>
+      <button class="btn btn-add" onclick="saveCategory()">Mentés</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const allProducts = ['Laptop', 'Egér', 'Billentyűzet', 'Monitor', 'USB kábel', 'Webkamera'];
+  let categories = [
+    { name: 'Elektronika', products: ['Laptop', 'Monitor'] },
+    { name: 'Kiegészítők', products: ['Egér', 'USB kábel'] }
+  ];
+  let editIndex = null;
+  
+  function renderCategories() {
+    const grid = document.getElementById('categoryGrid');
+    grid.innerHTML = '';
+    categories.forEach((cat, index) => {
+      const div = document.createElement('div');
+      div.className = 'category-card';
+      div.innerHTML = `
+          <div class="category-title">${cat.name}</div>
+          <ul class="product-list">
+            ${cat.products.map(p => `<li>${p}</li>`).join('')}
+          </ul>
+          <div class="actions">
+            <button class="btn btn-edit" onclick="openModal(${index})">Módosítás</button>
+            <button class="btn btn-delete" onclick="deleteCategory(${index})">Törlés</button>
+          </div>
+        `;
+      grid.appendChild(div);
+    });
+  }
+  
+  function openModal(index = null) {
+    editIndex = index;
+    document.getElementById('categoryModal').style.display = 'flex';
+    const nameInput = document.getElementById('categoryNameInput');
+    const productList = document.getElementById('productList');
+    const currentProducts = index !== null ? categories[index].products : [];
+    
+    nameInput.value = index !== null ? categories[index].name : '';
+    renderProductList(currentProducts);
+  }
+  
+  function closeModal() {
+    document.getElementById('categoryModal').style.display = 'none';
+  }
+  
+  function saveCategory() {
+    const name = document.getElementById('categoryNameInput').value.trim();
+    const selected = [...document.querySelectorAll('#productList input:checked')].map(cb => cb.value);
+    if (!name) return;
+    const cat = { name, products: selected };
+    
+    if (editIndex !== null) categories[editIndex] = cat;
+    else categories.push(cat);
+    
+    closeModal();
+    renderCategories();
+  }
+  
+  function deleteCategory(index) {
+    if (confirm('Biztosan törölni szeretnéd ezt a kategóriát?')) {
+      categories.splice(index, 1);
+      renderCategories();
+    }
+  }
+  
+  function renderProductList(selected = []) {
+    const container = document.getElementById('productList');
+    const search = document.getElementById('productSearch').value.toLowerCase();
+    container.innerHTML = '';
+    allProducts.forEach(product => {
+      if (product.toLowerCase().includes(search)) {
+        const label = document.createElement('label');
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.value = product;
+        input.checked = selected.includes(product);
+        label.appendChild(input);
+        label.appendChild(document.createTextNode(' ' + product));
+        container.appendChild(label);
+      }
+    });
+  }
+  
+  document.getElementById('productSearch').addEventListener('input', () => {
+    const currentChecked = [...document.querySelectorAll('#productList input:checked')].map(cb => cb.value);
+    renderProductList(currentChecked);
+  });
+  
+  renderCategories();
+</script>
+</body>
+</html>

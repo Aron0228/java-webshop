@@ -13,6 +13,9 @@ public class Product {
     private String description;
     @Column(name = "price", columnDefinition = "INTEGER")
     private Integer price;
+    private String card;
+    private Integer packaging;
+    private String mark;
 
     // --- Constructors ---
     public Product() {}
@@ -40,6 +43,15 @@ public class Product {
     public Integer getPrice() {
         return price;
     }
+    public String getCard() {
+        return card;
+    }
+    public Integer getPackaging() {
+        return packaging;
+    }
+    public String getMark() {
+        return mark;
+    }
 
     // --- Setters ---
     public void setId(Long id) {
@@ -56,5 +68,14 @@ public class Product {
     }
     public void setPrice(Integer price) {
         this.price = price;
+    }
+    public void setCard(String card) {
+        this.card = card;
+    }
+    public void setPackaging(Integer packaging) {
+        this.packaging = packaging;
+    }
+    public void setMark(String mark) {
+        this.mark = mark;
     }
 }

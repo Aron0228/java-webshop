@@ -21,8 +21,8 @@ public class CartItemService {
     public List<CartItem> getAll() {
         return cartItemRepository.findAll();
     }
-    public List<CartItem> getByCartId(Long cartId) {
-        return cartItemRepository.getByCartId(cartId).orElse(Collections.emptyList());
+    public List<CartItem> getByUserId(Long userId) {
+        return cartItemRepository.getByUserId(userId).orElse(Collections.emptyList());
     }
 
     public CartItem getById(Long id) {
@@ -33,5 +33,19 @@ public class CartItemService {
     }
     public void deleteById(Long id) {
         cartItemRepository.deleteById(id);
+    }
+
+    public CartItem createCartItem(Long userId, Integer quantity, Long productId) {
+        List<CartItem> userCartItems = getByUserId(userId);
+
+        for (CartItem cartItem : userCartItems) {
+            if (cartItem.getProductId().equals(productId)) {
+                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+                return cartItemRepository.save(cartItem);
+            }
+        }
+
+        CartItem cartItem = new CartItem(userId, productId, quantity);
+        return cartItemRepository.save(cartItem);
     }
 }

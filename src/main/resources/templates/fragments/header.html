@@ -1,6 +1,8 @@
 <div th:fragment="siteHeader">
   <header>
-    <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png" alt="">
+    <a href="/">
+      <img id="header-logo" class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png" alt="">
+    </a>
     
     <div class="nav-menus-items">
     <span class="categories-menu-item">
@@ -10,7 +12,15 @@
       <div class="categories-menu">
         
         <div class="categories">
-          <div class="category-column">
+          <div class="category-column" th:each="entry : ${categoryMap}">
+            <h3 th:text="${entry.key.name}">Parent Category</h3> <!-- Szülő neve -->
+            
+            <ul>
+              <li th:each="child : ${entry.value}" th:text="${child.name}" th:data-id="${child.id}" class="child-category">Child Category</li>
+            </ul>
+          </div>
+          
+          <!-- <div class="category-column">
             <h3>Coffee</h3>
             <ul>
               <li>Light Roast</li>
@@ -42,7 +52,7 @@
               <li>Drinkware</li>
               <li>Accessories</li>
             </ul>
-          </div>
+          </div> -->
         </div>
         
         
@@ -61,35 +71,12 @@
           
           <div class="carousel-container">
             <div class="carousel" id="carousel">
-              <div class="card">
-                <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-                <div class="card-title">Kenya Kirinyaga Washed</div>
-                <div class="price">$25</div>
-              </div>
-              <div class="card">
-                <img src="https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png&w=1400" alt="Funky Chicken">
-                <div class="card-title">Organic Funky Chicken</div>
-                <div class="price">$18</div>
-              </div>
-              <div class="card">
-                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-                <div class="price">$24</div>
-              </div>
-              <div class="card">
-                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-                <div class="price">$24</div>
-              </div>
-              <div class="card">
-                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-                <div class="price">$24</div>
-              </div>
-              <div class="card">
-                <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-                <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-                <div class="price">$24</div>
+              <div class="card" th:each="carouselItem : ${carouselItems}">
+                <a th:href="'/products/' + ${carouselItem.id}" style="text-decoration: none;">
+                  <img th:src="${carouselItem.b64Image}" alt="img">
+                  <div class="card-title" th:text="${carouselItem.name}"></div>
+                  <div class="price" th:text="'$' + ${carouselItem.price}"></div>
+                </a>
               </div>
             </div>
           </div>
@@ -113,10 +100,17 @@
         </th:block>
       </div>
       
-      <div class="cart">
+      <div class="cart" id="cart-link">
         Cart
         <span class="cart-item-counter" id="my-cart-counter"></span>
       </div>
+      
+      <script>
+        document.getElementById("cart-link").addEventListener("click", function () {
+          window.location.href = "/cart";
+        });
+      </script>
+      
     </div>
   </header>
 </div>

@@ -1,6 +1,12 @@
 package com.example.javawebshop.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -8,13 +14,18 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @Column(name = "fa_class", columnDefinition = "TEXT")
-    private String faClass;
+    private Long parentId;
+
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnore
+    private Set<Product> products = new HashSet<>();
+
 
     public Category() {}
-    public Category(String name, String faClass) {
+    public Category(Long id, String name, Long parentId) {
+        this.id = id;
         this.name = name;
-        this.faClass = faClass;
+        this.parentId = parentId;
     }
 
     public Long getId() {
@@ -29,10 +40,23 @@ public class Category {
     public void setName(String name) {
         this.name = name;
     }
-    public String getFaClass() {
-        return faClass;
+    public Long getParentId() {
+        return parentId;
     }
-    public void setFaClass(String faClass) {
-        this.faClass = faClass;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Set<Product> getProducts() { return products; }
+    public void setProducts(Set<Product> products) { this.products = products; }
+
+    public void addProduct(Product product) {
+        products.add(product);
+        product.getCategories().add(this);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+        product.getCategories().remove(this);
     }
 }

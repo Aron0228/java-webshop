@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <meta charset="UTF-8">
   <title>Users</title>
   
@@ -52,7 +53,8 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Courier New', monospace;
+      color: #2F432B;
       background: #f4ebe4;
       display: flex;
       justify-content: center;
@@ -188,28 +190,74 @@
     .edit-password:hover {
       background-color: #ec971f;
     }
+    
+    .user-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .user-card-header label {
+      left: 0;
+    }
+    
+    .fa-x {
+      cursor: pointer;
+      font-size: 1.2em;
+      margin-left: auto;
+      top: 0;
+      margin-top: 0;
+    }
+    
+    .user-card {
+      position: relative;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+      gap: 1rem;
+    }
+    
+    .user-card-header {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    
+    .fa-x {
+      cursor: pointer;
+      color: #2F432B;
+      margin-top: 0.5rem;
+      margin-right: 0.5rem;
+      font-size: 1.2rem;
+    }
+  
   
   </style>
 </head>
 <body>
+
+<div th:replace="~{fragments/header :: siteHeader}"></div>
+
 <div class="user-management">
-  <h2>Felhasználók kezelése</h2>
+  <h2>User Management</h2>
   <div class="user-grid">
     <div class="user-card">
-      <label>Név:
+      <label>Name:
         <input type="text" value="Kovács Anna" readonly>
       </label>
+      
       <label>Email:
         <input type="text" value="anna@example.com" readonly>
       </label>
+      
       <div class="card-actions">
-        <button class="edit-password">Jelszó szerkesztése</button>
-        <button class="edit-user">Szerkesztés</button>
-        <button class="delete-user">Törlés</button>
+        <button class="edit-password">Modify Password</button>
+        <button class="edit-user">Edit User Data</button>
+        <button class="delete-user">Delete User</button>
       </div>
     </div>
     <div class="user-card">
-      <label>Név:
+      <label>Name:
         <input type="text" value="Szabó Péter" readonly>
       </label>
       <label>Email:
@@ -222,7 +270,7 @@
       </div>
     </div>
     <div class="user-card">
-      <label>Név:
+      <label>Name:
         <input type="text" value="Szabó Péter" readonly>
       </label>
       <label>Email:
@@ -235,7 +283,7 @@
       </div>
     </div>
     <div class="user-card">
-      <label>Név:
+      <label>Name:
         <input type="text" value="Szabó Péter" readonly>
       </label>
       <label>Email:
@@ -248,7 +296,7 @@
       </div>
     </div>
     <div class="user-card">
-      <label>Név:
+      <label>Name:
         <input type="text" value="Szabó Péter" readonly>
       </label>
       <label>Email:
@@ -260,18 +308,18 @@
         <button class="delete-user">Törlés</button>
       </div>
     </div>
-</div>
+  </div>
 
-<div id="password-modal" class="modal hidden">
-  <div class="modal-content">
-    <h3>Új jelszó megadása</h3>
-    <input type="password" id="new-password" placeholder="Új jelszó">
-    <div class="modal-actions">
-      <button id="save-password">Mentés</button>
-      <button id="cancel-password">Mégse</button>
+  <div id="password-modal" class="modal hidden">
+    <div class="modal-content">
+      <h3>Új jelszó megadása</h3>
+      <input type="password" id="new-password" placeholder="Új jelszó">
+      <div class="modal-actions">
+        <button id="save-password">Mentés</button>
+        <button id="cancel-password">Mégse</button>
+      </div>
     </div>
   </div>
 </div>
-
 </body>
 </html>

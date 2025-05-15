@@ -39,23 +39,8 @@ public class MainViewController {
 
     @GetMapping
     public String index(Model model, HttpServletRequest request, HttpSession session) {
-        System.out.println("USERID: " + userSessionService.getCurrentUserId(request));
-        System.out.println("USERROLE: " + userSessionService.getCurrentUserRole(request));
-        System.out.println("USERFULLNAME: " + userSessionService.getCurrentUserFullName(request));
-        /*if (userSessionService.getCurrentUserFullName(request) != null) {
-            model.addAttribute("welcomeText",
-                    "Welcome, " + userSessionService.getCurrentUserFullName(request).split(" ")[1] + "!");
-        }
-        else {
-            model.addAttribute("welcomeText", "Welcome!");
-        }*/
-
-        userSessionService.setUserSpecificModelAttributes(model, request);
-
-        System.out.println("HTTPSESSIONID: " + session.getId());
-        model.addAttribute("products", productService.getAll());
-        /*model.addAttribute("categories", categoryService.getAll());
-        model.addAttribute("carouselItems", carouselItemService.getAll());*/
+        //userSessionService.setUserSpecificModelAttributes(model, request);
+        //model.addAttribute("products", productService.getAll());
         return "new-design/test";
     }
 

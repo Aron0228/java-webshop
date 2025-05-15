@@ -127,3 +127,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", async function (){
+    const logo = document.getElementById("header-logo");
+    logo.addEventListener('click', () => {
+        localStorage.clear();
+    });
+
+    const currentPath = window.location.pathname;
+    console.log(currentPath === '/');
+    if (currentPath !== '/') {
+        document.querySelectorAll(".child-category").forEach(item => {
+            item.addEventListener("click", async (event) => {
+                // A kattintott elemhez tartozó categoryId értékének lekérése
+                let categoryId = event.target.getAttribute("data-id");
+                console.log("Kattintott gyermek ID:", categoryId);
+                document.querySelector('.categories-menu').classList.toggle('hidden');
+
+                await localStorage.setItem("currentPage", 0);
+                await localStorage.setItem("categoryId", categoryId);
+                await localStorage.setItem("currentFilterName", event.target.textContent);
+                window.location.href = "/";
+            });
+        });
+    }
+});

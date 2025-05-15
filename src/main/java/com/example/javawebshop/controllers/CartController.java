@@ -3,6 +3,7 @@ package com.example.javawebshop.controllers;
 import com.example.javawebshop.dto.AddToCartRequest;
 import com.example.javawebshop.entities.Cart;
 import com.example.javawebshop.entities.CartItem;
+import com.example.javawebshop.entities.CartItemViewEntity;
 import com.example.javawebshop.services.CartItemService;
 import com.example.javawebshop.services.CartService;
 import com.example.javawebshop.services.UserSessionService;
@@ -28,6 +29,31 @@ public class CartController {
 
     @Autowired
     private CartItemService cartItemService;
+
+    @GetMapping("")
+    public String myCart(HttpServletRequest request, HttpSession session, Model model) {
+        userSessionService.setUserSpecificModelAttributes(model, request);
+
+        List<CartItemViewEntity> cartItemViewEntities = cartItemService.getCartItemViews(session, userSessionService.getCurrentUserId(request));
+
+        model.addAttribute("cartItemViewEntities", cartItemViewEntities);
+
+        return "new-design/my-cart-page";
+    }
+
+    @PostMapping("/change-quantity")
+    @ResponseBody
+    public void changeQuantity(HttpServletRequest request, HttpSession session, Model model) {
+        Long productId = Long.parseLong(request.getParameter("productId"));
+        Integer quantity = Integer.parseInt(request.getParameter("quantity"));
+        Long userId = userSessionService.getCurrentUserId(request);
+
+        cartService.setQuantityOfCartItem(
+                userSessionService.getCurrentUserId(request),
+                productId,
+                quantity,
+                session);
+    }
 
     @GetMapping("/size")
     @ResponseBody

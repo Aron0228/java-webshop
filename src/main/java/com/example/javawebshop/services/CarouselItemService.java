@@ -6,6 +6,7 @@ import com.example.javawebshop.repositories.CarouselItemRepository;
 import com.example.javawebshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,5 +31,16 @@ public class CarouselItemService {
         }
 
         return products;
+    }
+
+    public void setCarouselItemsInModel(Model model) {
+        List<CarouselItem> carouselItems = carouselItemRepository.findAll();
+        List<Product> products = new ArrayList<>();
+
+        for (CarouselItem item : carouselItems) {
+            products.add(productRepository.findById(item.getItemId()).orElse(null));
+        }
+
+        model.addAttribute("carouselItems", products);
     }
 }

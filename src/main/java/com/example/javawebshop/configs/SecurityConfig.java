@@ -34,7 +34,9 @@ public class SecurityConfig {
                                 "/cart/**",
                                 "/styles/**",
                                 "/scripts/**",
-                                "/products/**").permitAll()
+                                "/products/**",
+                                "/cart",
+                                "/api/**").permitAll()
                         .requestMatchers(String.valueOf(PathRequest.toStaticResources().atCommonLocations())).permitAll()
                         .anyRequest().authenticated()
                 )

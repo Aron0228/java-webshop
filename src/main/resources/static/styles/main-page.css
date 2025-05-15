@@ -266,6 +266,14 @@ header.hidden {
     margin-bottom: 0.5rem;
     font-size: 1rem;
     font-weight: lighter;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.category-column li:hover {
+    background: #FFFFFF;
+    transform: scale(1.05);
 }
 
 .page-content {
@@ -291,6 +299,15 @@ header.hidden {
     padding: 2rem;
 }
 
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 .product-card {
     width: 30rem;
     height: 35rem;
@@ -301,6 +318,7 @@ header.hidden {
     flex-shrink: 0;
     position: relative;
     overflow: hidden; /* opcionális, ha nem akarsz túlcsúszó badge-et */
+    animation: fadeSlideIn 0.4s ease-in-out;
 }
 
 .product-card img {
@@ -370,6 +388,12 @@ header.hidden {
 .product-nav nav li:hover {
     background: #2F432B;
     color: white;
+}
+
+.product-nav nav li.active {
+    background: #1a2e1b;
+    color: white;
+    font-weight: bold;
 }
 
 .hero-section {
@@ -542,3 +566,53 @@ header.hidden {
     transform: rotate(180deg);
     opacity: 1;
 }
+
+.text-filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem; /* opcionális: távolság a két blokk között */
+    margin-bottom: 1rem;
+}
+
+.text-search {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #FFFAF3;
+    color: #2F432B;
+    border: 1px solid #2F432B;
+    border-radius: 1rem;
+}
+
+.text-search i {
+    font-size: 1rem;
+    color: #2F432B;
+}
+
+.text-search input {
+    padding: 0.4rem 0.6rem;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-size: 1rem;
+    flex: 1;
+}
+
+.text-search button {
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    background: #2F432B;
+    color: white;
+    border: none;
+    border-radius: 1rem;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.text-search button:hover {
+    transform: scale(1.05);
+    background: #1a2e1b;
+}
+

@@ -115,6 +115,39 @@ public class CartService {
         cartRepository.addToCart(userId, cartItem);
     }
 
+    public void setQuantityOfCartItem(Long userId, Long productId, Integer quantity, HttpSession session) {
+        if (userId != null) {
+            setQuantityOfDatabaseCartItem(userId, productId, quantity);
+        }
+        else {
+            setQuantityOfSessionCartItem(session, productId, quantity);
+        }
+    }
+
+    private void setQuantityOfDatabaseCartItem(Long userId, Long productId, Integer quantity) {
+        List<CartItem> cartItems = cartItemService.getByUserId(userId);
+
+        for (CartItem cartItem : cartItems) {
+            if (cartItem.getProductId().equals(productId)) {
+                cartItem.setQuantity(quantity);
+                break;
+            }
+        }
+    }
+
+    private void setQuantityOfSessionCartItem(HttpSession session, Long productId, Integer quantity) {
+        List<Long> sessionCartRequests = (List<Long>) session.getAttribute("cartRequests");
+        if (sessionCartRequests == null) {
+            return;
+        }
+
+        for (int i = 0; i < quantity; i++){
+            sessionCartRequests.remove(productId);
+        }
+
+        session.setAttribute("cartRequests", sessionCartRequests);
+    }
+
     /*public boolean hasCart(String key) {
         return cartRepository.hasCart(key);
     }

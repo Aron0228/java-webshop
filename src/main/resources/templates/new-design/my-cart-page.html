@@ -1,440 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>My cart</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <script>
-    function animateTextReveal(element, finalText, speed = 50) {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+=-<>?/|';
-      let displayed = '';
-      let i = 0;
-      
-      function revealNextChar() {
-        if (i >= finalText.length) return;
-        
-        let interval = setInterval(() => {
-          element.textContent = displayed + chars[Math.floor(Math.random() * chars.length)];
-        }, speed / 3);
-        
-        setTimeout(() => {
-          clearInterval(interval);
-          displayed += finalText[i];
-          element.textContent = displayed;
-          i++;
-          revealNextChar();
-        }, speed);
-      }
-      
-      revealNextChar();
-    }
-    
-    document.addEventListener('DOMContentLoaded', () => {
-      // welcome animation
-      const el = document.querySelector('.welcome-text');
-      const finalText = el.getAttribute('data-text');
-      animateTextReveal(el, finalText, 80);
-      
-      // scroll behavior
-      let lastScrollTop = 0;
-      const header = document.querySelector('header');
-      window.addEventListener('scroll', () => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        header.classList.toggle('hidden', scrollTop > lastScrollTop && scrollTop > 0);
-        lastScrollTop = Math.max(scrollTop, 0);
-      });
-      
-      // dropdown toggle
-      const categories = document.querySelector('.categories-menu-item');
-      categories.addEventListener('click', () => {
-        document.querySelector('.categories-menu').classList.toggle('hidden');
-        categories.classList.toggle('open');
-      });
-    });
-  </script>
+  <link rel="stylesheet" th:href="@{/styles/header.css}">
+  <script th:src="@{/scripts/header.js}" defer></script>
+  
   <style>
     body {
       margin: 0;
       background-color: #ece7e0;
       font-family: 'Courier New', monospace;
       overflow-y: scroll;
-    }
-    
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: fixed;         /* <-- ez a kulcs */
-      top: 0;                  /* legyen a legfelső */
-      left: 0;
-      width: 100%;             /* teljes szélesség */
-      z-index: 1000;           /* előtérbe hozza */
-      background-color: #ece7e0; /* kell, hogy ne legyen átlátszó */
-      transition: transform 0.3s ease-in-out;
-    }
-    header.hidden {
-      transform: translateY(-100%);
-    }
-    
-    .logo {
-      width: 10rem;
-      filter: invert(51%) sepia(81%) saturate(609%) hue-rotate(0deg) brightness(70%) contrast(60%);
-      padding: 1rem 2rem;
-    }
-    
-    .nav-items {
-      color: #2F432B;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: bold;
-      font-size: 1rem;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    
-    .fa-user {
-      background: #FFFAF3;
-      color: #2F432B;
-      font-size: 1.25rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      line-height: 2.5rem;
-      text-align: center;
-      border-radius: 50%;
-      display: inline-block;
-      transition: background-color 0.3s, color 0.3s;
-    }
-    .fa-user:hover {
-      background-color: #2F432B;
-      color: #FFFAF3;
-    }
-    
-    .cart {
-      display: flex;
-      align-items: center;
-      background-color: #FFFAF3;
-      border-radius: 999px;
-      padding: 0.5rem 0.75rem;
-      font-size: 0.875rem;
-      border: none;
-      font-family: 'Courier New', monospace;
-      color: #2F432B;
-      gap: 0.5rem;
-      font-weight: 500;
-      margin-right: 2rem;
-      transition: background-color 0.3s, color 0.3s, border 0.3s;
-    }
-    .cart:hover {
-      background-color: #2F432B;
-      color: #FFFAF3;
-    }
-    .cart:hover .cart-item-counter {
-      border: 1px solid #FFFAF3;
-      background-color: #2F432B;
-      color: #FFFAF3;
-    }
-    
-    .cart-item-counter {
-      width: 1.5rem;
-      height: 1.5rem;
-      border-radius: 50%;
-      border: 1px solid #2F432B;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      color: #2F432B;
-      background-color: #FFFAF3;
-      min-width: fit-content;
-    }
-    
-    .categories-menu {
-      display: grid;
-      grid-template-columns: 1fr 1fr; /* két egyenlő szélességű oszlop */
-      gap: 1rem; /* választható hézag az oszlopok között */
-      padding: 1rem; /* választható belső margó */
-      background: #ece7e0;
-      font-weight: bold;
-      width: 100%;
-      max-height: 0;
-      transition: opacity 0.3s ease-in-out, max-height 0.3s ease-in-out;
-      position: absolute;
-      top: 100%;
-      left: 0;
-      z-index: 1002;
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .categories-menu.hidden {
-      transform: translateY(0);
-      z-index: 1002;
-      max-height: 1000px;
-      opacity: 1;
-      pointer-events: auto;
-      padding-bottom: 2rem;
-    }
-    
-    .categories-menu-item {
-      font-weight: bold;
-      color: #2F432B;
-      font-size: 1.25rem;
-      cursor: pointer;
-      transition: transform 0.3s ease-in-out;
-    }
-    .categories-menu-item:hover {
-      transform: scale(1.20);
-    }
-    .categories-menu-item i {
-      font-size: 1rem;
-      transition: transform 0.3s ease;
-    }
-    .categories-menu-item.open i{
-      transform: rotate(180deg);
-    }
-    
-    .welcome-wrapper {
-      margin-right: 1.5rem;
-      position: relative;
-      display: inline-block;
-    }
-    
-    .welcome-text-ghost {
-      visibility: hidden;
-      font-size: 1.25rem;
-    }
-    
-    .welcome-text {
-      position: absolute;
-      top: 0;
-      left: 0;
-      font-size: 1.25rem;
-      color: #2F432B;
-      pointer-events: none;
-    }
-    
-    .carousel-container {
-      margin-top: 2rem;
-      width: 72rem;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .carousel {
-      width: fit-content;
-      display: flex;
-      overflow: hidden;
-      transition: transform 0.3s ease-in-out;
-    }
-    
-    .card {
-      width: 20rem;
-      height: 25rem;
-      background: #E4DFD7;
-      border-radius: 1rem;
-      text-align: center;
-      margin: 0 1rem;
-      padding: 1rem;
-      flex-shrink: 0;
-    }
-    
-    .card img {
-      width: 20rem;
-      height: auto;
-      margin-bottom: 10px;
-    }
-    
-    .card-title {
-      font-weight: bold;
-      color: #2F432B;
-      font-size: 1.25rem;
-      margin-bottom: 5px;
-    }
-    
-    .price {
-      color: #2F432B;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    
-    .nav-button {
-      position: absolute;
-      top: 0;
-      transform: translateY(-50%);
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      margin: 2rem 4rem 4rem 4rem;
-      
-      background: #FFFAF3;
-      color: #2F432B;
-      font-size: 1.25rem;
-      width: 2.5rem;
-      height: 2.5rem;
-      line-height: 2.5rem;
-      text-align: center;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    
-    .nav-left {
-      margin-right: 8rem;
-      right: 0;
-    }
-    
-    .nav-right {
-      margin-right: 4rem;
-      right: 0;
-    }
-    
-    .featured-products-text {
-      color: #2F432B;
-      font-weight: bold;
-      padding-left: 1rem;
-      display: inline-block; /* Hozzáadva, hogy margóval működjön */
-      margin-top: 0.5rem;
-    }
-    
-    .carousel-nav {
-      width: 75rem;
-    }
-    
-    .categories {
-      display: grid;
-      grid-template-columns: 1fr 1fr; /* Két egyenlő szélességű oszlop */
-      gap: 1rem; /* Hézag az oszlopok között */
-      color: #2F432B;
-    }
-    
-    .category-column h3 {
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    
-    .category-column ul {
-      list-style-type: none;
-      padding-left: 0;
-    }
-    
-    .category-column li {
-      margin-bottom: 0.5rem;
-      font-size: 1rem;
-      font-weight: lighter;
-    }
-    
-    .page-content {
-      margin: 6rem 2rem 2rem 2rem;
-    }
-    
-    @media (max-width: 1024px) {
-      .products-wrapper {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    
-    @media (max-width: 600px) {
-      .products-wrapper {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    .products-wrapper {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr); /* 3 egyenlő szélességű oszlop */
-      gap: 2rem; /* térköz a kártyák között */
-      padding: 2rem;
-    }
-    
-    .product-card {
-      width: 33rem;
-      height: 38rem;
-      background: #E4DFD7;
-      border-radius: 1rem;
-      text-align: center;
-      padding: 1rem;
-      flex-shrink: 0;
-      position: relative;
-      overflow: hidden; /* opcionális, ha nem akarsz túlcsúszó badge-et */
-    }
-    
-    .product-card img {
-      width: 30rem;
-      height: auto;
-      margin-bottom: 10px;
-    }
-    
-    .product-mark {
-      position: absolute;
-      top: 1rem;
-      left: 2rem;
-      background: #7E7363;
-      text-align: center;
-      border-radius: 50%;
-      color: #FFFFFF;
-      font-size: 1rem;
-      width: 4rem;
-      height: 4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 999;
-    }
-    
-    .product-mark:empty {
-      display: none;
-    }
-    
-    .product-nav {
-      border-radius: 1rem;
-    }
-    
-    .product-nav nav {
-      grid-column: 1 / -1;
-      display: flex;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-    
-    .product-nav nav ul {
-      display: flex;
-      gap: 0.5rem;
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    
-    .product-nav nav li {
-      width: 1rem; /* vagy bármilyen méret */
-      aspect-ratio: 1 / 1; /* magasság = szélesség */
-      background: #f1f1f1;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: bold;
-      color: #333;
-      transition: background 0.2s ease, color 0.2s ease;
-      
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-    }
-    
-    .product-nav nav li:hover {
-      background: #2F432B;
-      color: white;
-    }
-    
-    .current-filter-name {
-      text-align: left;
-    }
-    .current-filter-name h3 {
-      color: #2F432B;
-      font-size: 2rem;
-      font-weight: lighter;
-      font-family: Self Modern, serif;
     }
     
     .cart-item {
@@ -612,11 +190,15 @@
     .dropdown-modal button:hover {
       background-color: #bc8a5f;
     }
+    
+    .page-content {
+      margin: 6rem 2rem 2rem 2rem;
+    }
   
   </style>
 </head>
 <body>
-<header>
+<!-- <header>
   <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png" alt="">
   
   <div class="nav-menus-items">
@@ -780,7 +362,9 @@
       <span class="cart-item-counter">0</span>
     </div>
   </div>
-</header>
+</header> -->
+
+<div th:replace="~{fragments/header :: siteHeader}"></div>
 
 <div class="page-content">
   <div class="current-filter-name">
@@ -790,112 +374,169 @@
   <div class="checkout-container">
     <!-- Bal oldal: Kosár tételek -->
     <div class="cart-items">
-      <!-- Ide jönnek a cart-itemek (akár több is) -->
-      <div class="cart-item">
-        <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
+      <div class="cart-item" th:each="cartItemEntity : ${cartItemViewEntities}" th:id="'cart-item-' + ${cartItemEntity.getProductId()}">
+        <img class="product-image" th:src="${cartItemEntity.b64Image}" alt="Product">
+        
         <div class="product-info">
           <div class="product-header">
-            <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
+            <h3 class="product-title" th:text="${cartItemEntity.productName}"></h3>
             <button class="remove-button">×</button>
           </div>
-          <p class="product-meta">Size: 10OZ</p>
-          <p class="product-meta">Grind: Whole Bean</p>
+          
+          <p class="product-meta" th:text="'Size: ' + ${cartItemEntity.size} + ' OZ'"></p>
+          
           <div class="product-footer">
             <div class="quantity-controls">
               Quantity:
-              <button class="quantity-btn">−</button>
-              <span class="quantity">1</span>
-              <button class="quantity-btn">+</button>
+              <button class="quantity-btn minus-btn">−</button>
+              <span class="quantity" th:text="${cartItemEntity.quantity}"></span>
+              <button class="quantity-btn plus-btn">+</button>
             </div>
-            <div class="product-price">$18.00</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="cart-item">
-        <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
-        <div class="product-info">
-          <div class="product-header">
-            <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
-            <button class="remove-button">×</button>
-          </div>
-          <p class="product-meta">Size: 10OZ</p>
-          <p class="product-meta">Grind: Whole Bean</p>
-          <div class="product-footer">
-            <div class="quantity-controls">
-              Quantity:
-              <button class="quantity-btn">−</button>
-              <span class="quantity">1</span>
-              <button class="quantity-btn">+</button>
-            </div>
-            <div class="product-price">$18.00</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="cart-item">
-        <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
-        <div class="product-info">
-          <div class="product-header">
-            <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
-            <button class="remove-button">×</button>
-          </div>
-          <p class="product-meta">Size: 10OZ</p>
-          <p class="product-meta">Grind: Whole Bean</p>
-          <div class="product-footer">
-            <div class="quantity-controls">
-              Quantity:
-              <button class="quantity-btn">−</button>
-              <span class="quantity">1</span>
-              <button class="quantity-btn">+</button>
-            </div>
-            <div class="product-price">$18.00</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="cart-item">
-        <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
-        <div class="product-info">
-          <div class="product-header">
-            <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
-            <button class="remove-button">×</button>
-          </div>
-          <p class="product-meta">Size: 10OZ</p>
-          <p class="product-meta">Grind: Whole Bean</p>
-          <div class="product-footer">
-            <div class="quantity-controls">
-              Quantity:
-              <button class="quantity-btn">−</button>
-              <span class="quantity">1</span>
-              <button class="quantity-btn">+</button>
-            </div>
-            <div class="product-price">$18.00</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="cart-item">
-        <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
-        <div class="product-info">
-          <div class="product-header">
-            <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
-            <button class="remove-button">×</button>
-          </div>
-          <p class="product-meta">Size: 10OZ</p>
-          <p class="product-meta">Grind: Whole Bean</p>
-          <div class="product-footer">
-            <div class="quantity-controls">
-              Quantity:
-              <button class="quantity-btn">−</button>
-              <span class="quantity">1</span>
-              <button class="quantity-btn">+</button>
-            </div>
-            <div class="product-price">$18.00</div>
+            
+            <div class="product-price" th:text="'$' + ${cartItemEntity.price}"></div>
           </div>
         </div>
       </div>
     </div>
+    
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // + és - gombok kezelése
+        document.querySelectorAll(".cart-item").forEach(cartItem => {
+          const productId = cartItem.id.replace('cart-item-', '');  // Kivesszük az id-ból a termék azonosítót
+          const minusBtn = cartItem.querySelector(".minus-btn");
+          const plusBtn = cartItem.querySelector(".plus-btn");
+          const quantityElem = cartItem.querySelector(".quantity");
+          const productPrice = cartItem.querySelector(".product-price");
+          
+          plusBtn.addEventListener("click", () => {
+            let quantity = parseInt(quantityElem.textContent);
+            quantityElem.textContent = (quantity + 1).toString();
+            console.log(`Product ID: ${productId}, New Quantity: ${quantity + 1}`);
+            
+            fetch("/cart/change-quantity", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: `productId=${productId}&quantity=${(quantity + 1)}`
+            })
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error("Hiba történt a mennyiség frissítésekor.");
+                }
+                return response.text();
+              })
+              .then(data => {
+                console.log("Sikeres frissítés:", data);
+              })
+              .catch(error => {
+                console.log(error)
+                console.error("Hiba:", error);
+              });
+          });
+          
+          minusBtn.addEventListener("click", () => {
+            let quantity = parseInt(quantityElem.textContent);
+            if (quantity > 1) {
+              quantityElem.textContent = quantity - 1;
+              console.log(`Product ID: ${productId}, New Quantity: ${quantity - 1}`);
+            }
+          });
+          
+          // Törlés gomb kezelése
+          const removeBtn = cartItem.querySelector(".remove-button");
+          removeBtn.addEventListener("click", () => {
+            cartItem.remove(); // Eltávolítja az elemet a DOM-ból
+            console.log(`Product ID: ${productId} removed from cart.`);
+          });
+        });
+      });
+    </script>
+    
+    <!-- <div class="cart-item">
+      <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
+      <div class="product-info">
+        <div class="product-header">
+          <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
+          <button class="remove-button">×</button>
+        </div>
+        <p class="product-meta">Size: 10OZ</p>
+        <p class="product-meta">Grind: Whole Bean</p>
+        <div class="product-footer">
+          <div class="quantity-controls">
+            Quantity:
+            <button class="quantity-btn">−</button>
+            <span class="quantity">1</span>
+            <button class="quantity-btn">+</button>
+          </div>
+          <div class="product-price">$18.00</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cart-item">
+      <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
+      <div class="product-info">
+        <div class="product-header">
+          <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
+          <button class="remove-button">×</button>
+        </div>
+        <p class="product-meta">Size: 10OZ</p>
+        <p class="product-meta">Grind: Whole Bean</p>
+        <div class="product-footer">
+          <div class="quantity-controls">
+            Quantity:
+            <button class="quantity-btn">−</button>
+            <span class="quantity">1</span>
+            <button class="quantity-btn">+</button>
+          </div>
+          <div class="product-price">$18.00</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cart-item">
+      <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
+      <div class="product-info">
+        <div class="product-header">
+          <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
+          <button class="remove-button">×</button>
+        </div>
+        <p class="product-meta">Size: 10OZ</p>
+        <p class="product-meta">Grind: Whole Bean</p>
+        <div class="product-footer">
+          <div class="quantity-controls">
+            Quantity:
+            <button class="quantity-btn">−</button>
+            <span class="quantity">1</span>
+            <button class="quantity-btn">+</button>
+          </div>
+          <div class="product-price">$18.00</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="cart-item">
+      <img class="product-image" src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?w=1400" alt="Product">
+      <div class="product-info">
+        <div class="product-header">
+          <h3 class="product-title">Honduras Chinacla Washed -<br>Regenerative Organic Certified®</h3>
+          <button class="remove-button">×</button>
+        </div>
+        <p class="product-meta">Size: 10OZ</p>
+        <div class="product-footer">
+          <div class="quantity-controls">
+            Quantity:
+            <button class="quantity-btn">−</button>
+            <span class="quantity">1</span>
+            <button class="quantity-btn">+</button>
+          </div>
+          <div class="product-price">$18.00</div>
+        </div>
+      </div>
+    </div>
+  </div> -->
     
     <!-- Jobb oldal: Számlázási adatok -->
     <!-- <div class="billing-form">
@@ -935,7 +576,6 @@
       </form>
     </div>
   </div>
-
 
 </div>
 </body>

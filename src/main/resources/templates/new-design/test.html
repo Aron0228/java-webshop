@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" th:href="@{/styles/main-page.css}">
   <script th:src="@{/scripts/main-page.js}" defer></script>
+  <link rel="stylesheet" th:href="@{/styles/header.css}">
   <script th:src="@{/scripts/header.js}" defer></script>
   <!-- <script>
     function animateTextReveal(element, finalText, speed = 50) {
@@ -640,170 +641,36 @@
   });
 </script> -->
 <body>
-<header>
-  <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Spring_Framework_Logo_2018.svg/2560px-Spring_Framework_Logo_2018.svg.png" alt="">
-  
-  <div class="nav-menus-items">
-    <span class="categories-menu-item">
-      Categories
-      <i class="fa-solid fa-arrow-up"></i>
-    </span>
-    <div class="categories-menu">
-      
-      <div class="categories">
-        <div class="category-column">
-          <h3>Coffee</h3>
-          <ul>
-            <li>Light Roast</li>
-            <li>Medium Roast</li>
-            <li>Dark Roast</li>
-          </ul>
-          <div style="height: 0.25rem;"></div>
-          <ul>
-            <li>Single Origin</li>
-            <li>Decaf</li>
-            <li>Single Serve</li>
-            <li>Shop All</li>
-          </ul>
-        </div>
-        <div class="category-column">
-          <h3>Everything Else</h3>
-          <ul>
-            <li>Everything Else</li>
-            <li>Gift Card</li>
-            <li>Equipment</li>
-            <li>Tea</li>
-            <li>Syrup</li>
-            <li>All Merch</li>
-          </ul>
-          <div style="height: 0.25rem;"></div>
-          <ul>
-            <li>Apparel</li>
-            <li>Hats</li>
-            <li>Drinkware</li>
-            <li>Accessories</li>
-          </ul>
-        </div>
-      </div>
-      
-      
-      <div class="carousel-nav">
-        <div>
-          <span class="featured-products-text">Featured products</span>
-        </div>
-        <div>
-          <button class="nav-button nav-left" onclick="scrollCarousel(-1)">
-            <i class="fa-solid fa-arrow-left"></i>
-          </button>
-          <button class="nav-button nav-right" onclick="scrollCarousel(1)">
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        </div>
-        
-        <div class="carousel-container">
-          <div class="carousel" id="carousel">
-            <div class="card">
-              <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-              <div class="card-title">Kenya Kirinyaga Washed</div>
-              <div class="price">$25</div>
-            </div>
-            <div class="card">
-              <img src="https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/ce289517d0c6216145f5b6bbd70447be305b423c-3000x3000.png&w=1400" alt="Funky Chicken">
-              <div class="card-title">Organic Funky Chicken</div>
-              <div class="price">$18</div>
-            </div>
-            <div class="card">
-              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-              <div class="price">$24</div>
-            </div>
-            <div class="card">
-              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-              <div class="price">$24</div>
-            </div>
-            <div class="card">
-              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-              <div class="price">$24</div>
-            </div>
-            <div class="card">
-              <img src="https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/50c635b425a6a830778504d7a0b1bccdef3d2404-2000x2000.png&w=1400" alt="Ethiopia Worka">
-              <div class="card-title">Ethiopia Worka Sakaro Anaerobic</div>
-              <div class="price">$24</div>
-            </div>
-          </div>
-        </div>
-        
-        <!-- <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const carousel = document.getElementById('carousel');
-            if (!carousel) {
-              console.error("A 'carousel' elem nem található!");
-              return;
-            }
-            
-            const cardWidthRem = 24; // 10rem széles + 2x1rem margó + puffer
-            const cardsPerPage = 3;
-            const totalCards = carousel.children.length;
-            const maxIndex = totalCards - cardsPerPage;
-            let currentIndex = 0;
-            
-            function scrollCarousel(direction) {
-              currentIndex += direction;
-              if (currentIndex < 0) currentIndex = 0;
-              if (currentIndex > maxIndex) currentIndex = maxIndex;
-              
-              const scrollAmount = currentIndex * cardWidthRem;
-              carousel.style.transform = `translateX(${-scrollAmount}rem)`;
-            }
-            
-            // Ha máshonnan akarod elérni scrollCarousel-t:
-            window.scrollCarousel = scrollCarousel;
-          });
-        </script> -->
-      
-      </div>
-    
-    </div>
-  </div>
-  
-  <div class="nav-items">
-    <div class="welcome-wrapper">
-      <div class="welcome-text-ghost" th:text="${welcomeText}"></div>
-      <div class="welcome-text" th:attr="data-text=${welcomeText}"></div>
-    </div>
-    <i class="fa-regular fa-user"></i>
-    <div class="cart">
-      Cart
-      <span class="cart-item-counter" id="my-cart-counter"></span>
-    </div>
-  </div>
-</header>
+
+<div th:replace="~{fragments/header :: siteHeader}"></div>
+
 <div class="page-content">
   
   <div class="listing-header">
     <div class="current-filter-name">
       <h3>All Coffee</h3>
     </div>
-    
-    <div class="sort-wrapper">
-      <span class="sort-label">Sort</span>
-      <span class="sort-toggle">+</span>
-    </div>
-    <div class="sort-menu">
-      <div class="sort-column">
-        <ul>
-          <li>Light Roast</li>
-          <li>Medium Roast</li>
-          <li>Dark Roast</li>
-          <li>Single Origin</li>
-          <li>Decaf</li>
-          <li>Single Serve</li>
-          <li>Shop All</li>
-        </ul>
+    <div class="text-filter">
+      <div class="text-search">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="search-input" type="text" placeholder="Search products...">
+        <button id="search-button">Search</button>
+      </div>
+      <div class="sort-wrapper">
+        <span class="sort-label">Sort</span>
+        <span class="sort-toggle">+</span>
+      </div>
+      <div class="sort-menu">
+        <div class="sort-column">
+          <ul>
+            <li data-sort="NONE">None</li>
+            <li data-sort="DESCENDING">Price Descending</li>
+            <li data-sort="ASCENDING">Price Ascending</li>
+          </ul>
+        </div>
       </div>
     </div>
+    
   </div>
   
   <div class="hero-section">
@@ -811,91 +678,191 @@
     <div class="hero-text">Our collection offers products with the highest quality</div>
   </div>
   
-  <div class="products-wrapper">
-    
-    <div class="product-card" th:each="product : ${products}">
-      <a th:href="@{'/products/' + ${product.getId()}}" style="text-decoration: none;" class="product-link">
-        <p class="product-mark" th:text="${product.mark}"></p>
-        <img th:src="${product.b64Image}" alt="img">
-        <div class="card-title" th:text="${product.name}"></div>
-        <div class="price" th:text="'$' + ${product.price}"></div>
-      </a>
-    </div>
-    
-    <!-- <div class="product-card">
-      <p class="product-mark"></p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div>
-    
-    <div class="product-card">
-      <p class="product-mark">NEW</p>
-      <img src="https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png?auto=format&q=75&url=https://cdn.sanity.io/images/4t60hegj/production/a868c6b100a42ddd4961334e03531120157c0656-2000x2000.png&w=1400" alt="Kenya Kirinyaga">
-      <div class="card-title">Kenya Kirinyaga Washed</div>
-      <div class="price">$25</div>
-    </div> -->
+  <div class="products-wrapper" id="product-container">
   </div>
   
   <div class="product-nav">
     <nav>
       <ul>
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
       </ul>
     </nav>
   </div>
   
+  <!-- <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      let categoryId = null;
+      // Eseménykezelő az összes gyermek kategóriához
+      document.querySelectorAll(".child-category").forEach(item => {
+        item.addEventListener("click", (event) => {
+          // A kattintott elemhez tartozó child.id kiírása
+          categoryId = event.target.getAttribute("data-id");
+          console.log("Kattintott gyermek ID:", categoryId);
+        });
+      });
+      
+      const productContainer = document.getElementById("product-container");
+      const searchInput = document.getElementById("search-input");
+      const searchButton = document.getElementById("search-button");
+      
+      // Visszatöltjük a mentett értékeket
+      const savedPage = parseInt(localStorage.getItem("currentPage")) || 0;
+      const savedSort = localStorage.getItem("sortOption") || "NONE";
+      const savedFilter = localStorage.getItem("filterText") || "";
+      searchInput.value = savedFilter;
+      
+      // Gomb eseménykezelő egyszer, kívül a loadPage-ből
+      searchButton.addEventListener("click", () => {
+        const filterText = searchInput.value;
+        loadPage(0, localStorage.getItem("sortOption"), filterText);
+      });
+      
+      await loadPage(savedPage, savedSort, savedFilter, categoryId);
+      
+      async function loadPage(page, sortOption = "NONE", filter = "", categoryId = "null") {
+        localStorage.setItem("currentPage", page);
+        localStorage.setItem("sortOption", sortOption);
+        localStorage.setItem("filterText", filter);
+        localStorage.setItem("categoryId", categoryId)
+        
+        const response = await fetch(`/api/products?page=${page}&sortOption=${sortOption}&filter=${encodeURIComponent(filter)}&categoryId=${categoryId}`);
+        const data = await response.json();
+        
+        productContainer.innerHTML = "";
+        
+        data.content.forEach(product => {
+          const card = document.createElement("div");
+          if (product.mark === null) product.mark = '';
+          card.className = "product-card";
+          card.innerHTML = `
+        <a href="/products/${product.id}" style="text-decoration: none;" class="product-link">
+          <p class="product-mark">${product.mark}</p>
+          <img src="${product.b64Image}" alt="img">
+          <div class="card-title">${product.name}</div>
+          <div class="price">$${product.price}</div>
+        </a>`;
+          productContainer.appendChild(card);
+        });
+        
+        const nav = document.querySelector(".product-nav ul");
+        nav.innerHTML = "";
+        for (let i = 1; i <= data.totalPages; i++) {
+          const li = document.createElement("li");
+          li.id = i;
+          li.textContent = i;
+          if (i - 1 === page) li.classList.add("active");
+          li.addEventListener("click", () => {
+            loadPage(i - 1, localStorage.getItem("sortOption"), localStorage.getItem("filterText"));
+            window.scrollTo({ top: 6 * parseFloat(getComputedStyle(document.documentElement).fontSize), behavior: 'smooth' });
+          });
+          nav.appendChild(li);
+        }
+      }
+      
+      // Rendezési opciók kezelése
+      document.querySelectorAll(".sort-menu li").forEach(option => {
+        option.addEventListener("click", () => {
+          const sortOption = option.getAttribute("data-sort");
+          loadPage(0, sortOption, searchInput.value);
+        });
+      });
+    });
+  </script> -->
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", async function () {
+      const filterNameEl = document.querySelector('.current-filter-name h3');
+      if (filterNameEl) {
+        filterNameEl.innerHTML = `<i class="fa fa-spinner fa-spin"></i>`;
+      }
+      
+      // Eseménykezelő az összes gyermek kategóriához
+      document.querySelectorAll(".child-category").forEach(item => {
+        item.addEventListener("click", async (event) => {
+          // A kattintott elemhez tartozó categoryId értékének lekérése
+          let categoryId = event.target.getAttribute("data-id");
+          console.log("Kattintott gyermek ID:", categoryId);
+          document.querySelector('.categories-menu').classList.toggle('hidden');
+          
+          await loadPage(0, localStorage.getItem("sortOption"), localStorage.getItem("filterText"), categoryId, event.target.textContent);
+        });
+      });
+      
+      const productContainer = document.getElementById("product-container");
+      const searchInput = document.getElementById("search-input");
+      const searchButton = document.getElementById("search-button");
+      
+      // Visszatöltjük a mentett értékeket
+      const savedPage = parseInt(localStorage.getItem("currentPage")) || 0;
+      const savedSort = localStorage.getItem("sortOption") || "NONE";
+      const savedFilter = localStorage.getItem("filterText") || "";
+      const categoryId = localStorage.getItem("categoryId") || "null";
+      const currentFilterName = localStorage.getItem("currentFilterName") || "All Coffee";
+      
+      searchInput.value = savedFilter;
+      
+      // Gomb eseménykezelő egyszer, kívül a loadPage-ből
+      searchButton.addEventListener("click", () => {
+        const filterText = searchInput.value;
+        loadPage(0, localStorage.getItem("sortOption"), filterText, categoryId, currentFilterName);
+      });
+      
+      // Első oldal betöltése a saved adatokkal
+      await loadPage(savedPage, savedSort, savedFilter, categoryId, currentFilterName);
+      
+      async function loadPage(page, sortOption = "NONE", filter = "", categoryId = "null", currentFilterName = "All Coffee") {
+        localStorage.setItem("categoryId", categoryId);
+        localStorage.setItem("currentFilterName", currentFilterName);
+        localStorage.setItem("currentPage", page);
+        localStorage.setItem("sortOption", sortOption);
+        localStorage.setItem("filterText", filter);
+        
+        const response = await fetch(`/api/products?page=${page}&sortOption=${sortOption}&filter=${encodeURIComponent(filter)}&categoryId=${categoryId}`);
+        const data = await response.json();
+        
+        productContainer.innerHTML = "";
+        
+        data.content.forEach(product => {
+          const card = document.createElement("div");
+          if (product.mark === null) product.mark = '';
+          card.className = "product-card";
+          card.innerHTML = `
+        <a href="/products/${product.id}" style="text-decoration: none;" class="product-link">
+          <p class="product-mark">${product.mark}</p>
+          <img src="${product.b64Image}" alt="img">
+          <div class="card-title">${product.name}</div>
+          <div class="price">$${product.price}</div>
+        </a>`;
+          productContainer.appendChild(card);
+        });
+        
+        const filterNameEl = document.querySelector('.current-filter-name h3');
+        filterNameEl.textContent = currentFilterName;
+        
+        const nav = document.querySelector(".product-nav ul");
+        nav.innerHTML = "";
+        for (let i = 1; i <= data.totalPages; i++) {
+          const li = document.createElement("li");
+          li.id = i;
+          li.textContent = i;
+          if (i - 1 === page) li.classList.add("active");
+          li.addEventListener("click", () => {
+            loadPage(i - 1, localStorage.getItem("sortOption"), localStorage.getItem("filterText"), localStorage.getItem("categoryId"), localStorage.getItem("currentFilterName"));
+            window.scrollTo({ top: 6 * parseFloat(getComputedStyle(document.documentElement).fontSize), behavior: 'smooth' });
+          });
+          nav.appendChild(li);
+        }
+      }
+      
+      // Rendezési opciók kezelése
+      document.querySelectorAll(".sort-menu li").forEach(option => {
+        option.addEventListener("click", () => {
+          const sortOption = option.getAttribute("data-sort");
+          loadPage(0, sortOption, searchInput.value, categoryId);
+        });
+      });
+    });
+  </script>
+
 </div>
 </body>
 </html>

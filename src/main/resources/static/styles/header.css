@@ -259,6 +259,14 @@ header.hidden {
     margin-bottom: 0.5rem;
     font-size: 1rem;
     font-weight: lighter;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.2rem;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+.category-column li:hover {
+    background: #FFFFFF;
+    transform: scale(1.05);
 }
 
 .dropdown-modal {
